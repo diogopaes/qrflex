@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-import { getServerSession } from 'next-auth';
+import { getServerSession, AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { adminDb } from '@/config/firebase';
 
@@ -43,7 +43,7 @@ const config = {
     signOut: '/',
     error: '/',
   },
-};
+} satisfies AuthOptions;
 
 export const handlers = NextAuth(config);
 export const auth = () => getServerSession(config);
