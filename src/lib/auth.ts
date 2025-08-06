@@ -37,6 +37,10 @@ const config = {
       }
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      // Redireciona para o dashboard após o login
+      return `${baseUrl}/dashboard`;
+    },
   },
   pages: {
     signIn: '/',
