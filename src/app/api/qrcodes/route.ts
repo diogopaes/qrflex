@@ -50,9 +50,11 @@ export async function GET(req: Request) {
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
+    console.log('session', session);
+
     const qrCodesSnapshot = await adminDb()
       .collection('qrcodes')
-      .where('userId', '==', session.user.id)
+      .where('userId', '==', session?.user?.id)
       //.orderBy('createdAt', 'desc')
       .get();
 

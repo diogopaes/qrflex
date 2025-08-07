@@ -1,0 +1,31 @@
+[
+    {
+      "name": "Básico",
+      "price": "9,90",
+      "description": "Perfeito para começar",
+      "features": [
+        { "text": "1 QR Code Dinâmico", "included": true },
+        { "text": "Edição ilimitada do link", "included": true },
+        { "text": "Estatísticas de acesso", "included": false },
+        { "text": "Acesso imediato", "included": true },
+        { "text": "Suporte prioritário", "included": false }
+      ],
+      "highlighted": false,
+      "type": "basic"
+    },
+    {
+      "name": "Completo",
+      "price": "29,90",
+      "description": "Para profissionais",
+      "features": [
+        { "text": "QRs Dinâmicos ilimitados", "included": true },
+        { "text": "Edição ilimitada do link", "included": true },
+        { "text": "Estatísticas de acesso", "included": true },
+        { "text": "Acesso imediato", "included": true },
+        { "text": "Suporte prioritário", "included": true }
+      ],
+      "highlighted": true,
+      "type": "premium"
+    }
+  ]
+  

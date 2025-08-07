@@ -2,19 +2,43 @@
 
 import { useSession, signIn } from 'next-auth/react';
 import { useState } from 'react';
-import { redirect } from 'next/navigation';
-import { Header } from '@/components/Header';
-
+import plan from '@/mock/plan.json';
+import Link from 'next/link';
+    
 export default function Home() {
   const { status } = useSession();
 
-  if (status === 'authenticated') {
-    redirect('/dashboard');
+  async function handleSignIn(planSelected: string) {
+    await signIn("google", {
+      callbackUrl: `/checkout/${planSelected}`,
+    });
   }
 
   return (
     <div className="pt-16">
-      <Header />
+      <header className="fixed top-0 left-0 right-0 bg-white z-50">
+      <div className="container mx-auto px-6 h-18 flex items-center justify-between">
+        <Link href="/" className="text-xl font-bold text-primary">
+          QRFlix
+        </Link>
+
+        {status === 'authenticated' ? (
+          <Link
+            href="/dashboard"
+            className="bg-primary text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-700 transition-colors"
+          >
+            Dashboard
+          </Link>
+        ) : (
+          <button
+            onClick={() => handleSignIn('basic')}
+            className="bg-primary text-white px-6 py-2 rounded-full font-semibold hover:scale-105 transition-colors cursor-pointer"
+          >
+            Começar Agora
+          </button>
+        )}
+      </div>
+    </header>
       <main className="min-h-screen">
         {/* Hero Section */}
         <section className="flex items-center">
@@ -36,14 +60,14 @@ export default function Home() {
                 <div className="space-y-6 pt-4">
                   <div className="flex flex-col sm:flex-row gap-4">
                     <button
-                      onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
-                      className="bg-primary text-white px-8 py-4 rounded-2xl font-semibold text-md hover:bg-primary-600 transition-all shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30"
+                      onClick={() => handleSignIn('basic')}
+                      className="bg-primary text-white px-8 py-4 rounded-full font-semibold text-md hover:bg-primary-600 transition-all shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30 cursor-pointer"
                     >
                       Começar por R$ 9,90/mês
                     </button>
                     <button
                       onClick={() => document.getElementById('planos')?.scrollIntoView({ behavior: 'smooth' })}
-                      className="bg-white text-gray-600 px-8 py-4 rounded-2xl font-semibold text-md hover:bg-gray-50 transition-all border border-gray-200"
+                      className="bg-white text-gray-600 px-8 py-4 rounded-full font-semibold text-md hover:bg-gray-50 transition-all border border-gray-200 cursor-pointer"
                     >
                       Ver Planos
                     </button>
@@ -195,34 +219,7 @@ export default function Home() {
             
             {/* Cards de Planos */}
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {[
-                {
-                  name: 'Essencial',
-                  price: '9,90',
-                  description: 'Perfeito para começar',
-                  features: [
-                    { text: '1 QR Code Dinâmico', included: true },
-                    { text: 'Edição ilimitada do link', included: true },
-                    { text: 'Estatísticas de acesso', included: false },
-                    { text: 'Acesso imediato', included: true },
-                    { text: 'Suporte prioritário', included: false }
-                  ],
-                  highlighted: false
-                },
-                {
-                  name: 'Premium',
-                  price: '29,90',
-                  description: 'Para profissionais',
-                  features: [
-                    { text: 'QRs Dinâmicos ilimitados', included: true },
-                    { text: 'Edição ilimitada do link', included: true },
-                    { text: 'Estatísticas de acesso', included: true },
-                    { text: 'Acesso imediato', included: true },
-                    { text: 'Suporte prioritário', included: true }
-                  ],
-                  highlighted: true
-                }
-              ].map((plan, index) => (
+              {plan.map((plan, index) => (
                 <div 
                   key={index} 
                   className={`relative bg-white rounded-2xl p-8 ${
@@ -264,8 +261,8 @@ export default function Home() {
                     ))}
                   </div>
                   <button
-                    onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
-                    className={`w-full mt-8 px-6 py-3 rounded-xl font-medium transition-all ${
+                    onClick={() => handleSignIn(plan.type)}
+                    className={`w-full mt-8 px-6 py-3 rounded-full font-medium transition-all cursor-pointer ${
                       plan.highlighted
                         ? 'bg-primary text-white hover:bg-primary-600'
                         : 'bg-gray-50 text-gray-800 hover:bg-gray-100'
@@ -280,16 +277,16 @@ export default function Home() {
             {/* CTAs */}
             <div className="mt-12 flex flex-col md:flex-row gap-6 justify-center">
               <button
-                onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
-                className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary-50 transition-colors shadow-sm"
+                onClick={() => handleSignIn('basic')}
+                className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary-50 transition-colors shadow-sm cursor-pointer"
               >
-                Assinar o Essencial
+                Assinar o Básico
               </button>
               <button
-                onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
-                className="bg-primary text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary-600 transition-colors shadow-sm"
+                onClick={() => handleSignIn('premium')}
+                className="bg-primary text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary-600 transition-colors shadow-sm cursor-pointer"
               >
-                Quero o Premium
+                Quero o Completo
               </button>
             </div>
           </div>
@@ -362,8 +359,8 @@ export default function Home() {
                   Escolha seu plano e comece a criar QR Codes em menos de 1 minuto
                 </p>
                 <button
-                  onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
-                  className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary-50 transition-colors w-full md:w-auto"
+                  onClick={() => handleSignIn('basic')}
+                  className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary-50 transition-colors w-full md:w-auto cursor-pointer"
                 >
                   Começar por R$ 9,90/mês
                 </button>
@@ -488,14 +485,14 @@ export default function Home() {
               </p>
               <div className="flex flex-col md:flex-row gap-4 justify-center">
                 <button
-                  onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
-                  className="bg-primary text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary-600 transition-colors shadow-sm"
+                  onClick={() => handleSignIn('basic')}
+                  className="bg-primary text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary-600 transition-colors shadow-sm cursor-pointer"
                 >
                   Começar Agora
                 </button>
                 <button
                   onClick={() => document.getElementById('planos')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-50 transition-colors border-2 border-primary"
+                  className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-50 transition-colors border-2 border-primary cursor-pointer"
                 >
                   Ver Planos
                 </button>

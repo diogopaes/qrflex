@@ -19,6 +19,8 @@ import { useState } from "react";
 import { useQRCodes } from "@/hooks/useQRCodes";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 const createQRCodeSchema = z.object({
   name: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
@@ -28,11 +30,16 @@ const createQRCodeSchema = z.object({
 type CreateQRCodeForm = z.infer<typeof createQRCodeSchema>;
 
 export default function DashboardPage() {
+  const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const { qrCodes, isLoading, error, createQRCode } = useQRCodes();
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<CreateQRCodeForm>({
     resolver: zodResolver(createQRCodeSchema)
   });
+
+  if (session && session.user.plan === 'none') {
+    redirect('/dashboard/plans');
+  }
 
   const onSubmit = async (data: CreateQRCodeForm) => {
     try {
