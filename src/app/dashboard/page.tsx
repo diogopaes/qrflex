@@ -37,7 +37,12 @@ export default function DashboardPage() {
     isOpen: false,
     qrCode: null
   });
-  const { qrCodes, isLoading, error, createQRCode } = useQRCodes();
+  const [editQRCode, setEditQRCode] = useState<{ isOpen: boolean; qrCode: any }>({
+    isOpen: false,
+    qrCode: null
+  });
+  const { register: registerEdit, handleSubmit: handleSubmitEdit, formState: { errors: errorsEdit, isSubmitting: isSubmittingEdit }, reset: resetEdit } = useForm<CreateQRCodeForm>();
+  const { qrCodes, isLoading, error, createQRCode, updateQRCode } = useQRCodes();
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<CreateQRCodeForm>({
     resolver: zodResolver(createQRCodeSchema)
   });
@@ -191,7 +196,16 @@ export default function DashboardPage() {
                             <Eye className="w-4 h-4" />
                             Visualizar
                           </button>
-                          <button className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/5 text-primary hover:bg-primary/10 transition-colors">
+                          <button 
+                            onClick={() => {
+                              setEditQRCode({ isOpen: true, qrCode: qr });
+                              resetEdit({
+                                name: qr.name,
+                                url: qr.url
+                              });
+                            }}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
+                          >
                             Editar
                           </button>
                         </div>
@@ -267,9 +281,75 @@ export default function DashboardPage() {
                   </Button>
                 </form>
               </DialogContent>
-            </Dialog>
+                          </Dialog>
 
-            {/* Modal de Visualização do QR Code */}
+              {/* Modal de Edição do QR Code */}
+              <Dialog open={editQRCode.isOpen} onOpenChange={(open) => !open && setEditQRCode({ isOpen: false, qrCode: null })}>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl font-semibold text-gray-900">Editar QR Code</DialogTitle>
+                    <DialogDescription className="text-gray-500 mb-4">
+                      Atualize as informações do seu QR Code
+                    </DialogDescription>
+                  </DialogHeader>
+                  <form onSubmit={handleSubmitEdit(async (data) => {
+                    try {
+                      if (editQRCode.qrCode) {
+                        await updateQRCode(editQRCode.qrCode.id, data.name, data.url);
+                        setEditQRCode({ isOpen: false, qrCode: null });
+                      }
+                    } catch (error) {
+                      console.error('Erro ao atualizar QR Code:', error);
+                    }
+                  })} className="space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-name">Nome do QR Code</Label>
+                      <Input
+                        id="edit-name"
+                        placeholder="Ex: Cardápio Digital"
+                        className="h-12 !rounded-md"
+                        {...registerEdit('name', {
+                          required: 'Nome é obrigatório',
+                          minLength: {
+                            value: 3,
+                            message: 'Nome deve ter pelo menos 3 caracteres'
+                          }
+                        })}
+                        disabled={isSubmittingEdit}
+                      />
+                      {errorsEdit.name && (
+                        <p className="text-sm text-red-500">{errorsEdit.name.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="edit-url">URL de Destino</Label>
+                      <Input
+                        id="edit-url"
+                        className="h-12 !rounded-md"
+                        placeholder="https://seu-site.com/pagina"
+                        {...registerEdit('url', {
+                          required: 'URL é obrigatória',
+                          pattern: {
+                            value: /^https?:\/\/.+/,
+                            message: 'URL inválida'
+                          }
+                        })}
+                        disabled={isSubmittingEdit}
+                      />
+                      {errorsEdit.url && (
+                        <p className="text-sm text-red-500">{errorsEdit.url.message}</p>
+                      )}
+                    </div>
+
+                    <Button type="submit" size="lg" className="!ml-auto cursor-pointer rounded-full block" disabled={isSubmittingEdit}>
+                      {isSubmittingEdit ? 'Salvando...' : 'Salvar Alterações'}
+                    </Button>
+                  </form>
+                </DialogContent>
+              </Dialog>
+
+              {/* Modal de Visualização do QR Code */}
             <Dialog open={viewQRCode.isOpen} onOpenChange={(open) => setViewQRCode({ isOpen: open, qrCode: null })}>
               <DialogContent className="sm:max-w-md">
                 <DialogHeader>

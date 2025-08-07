@@ -22,6 +22,29 @@ export function useQRCodes() {
     }
   };
 
+  const updateQRCode = async (id: string, name: string, url: string) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`/api/qrcodes/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, url }),
+      });
+
+      if (!response.ok) throw new Error('Falha ao atualizar QR Code');
+      
+      const updatedQRCode = await response.json();
+      setQRCodes(prev => prev.map(qr => qr.id === id ? { ...qr, name, url } : qr));
+      setError(null);
+      return updatedQRCode;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const createQRCode = async (name: string, url: string) => {
     try {
       setIsLoading(true);
@@ -54,6 +77,7 @@ export function useQRCodes() {
     isLoading,
     error,
     createQRCode,
+    updateQRCode,
     refreshQRCodes: fetchQRCodes,
   };
 }
