@@ -1,6 +1,5 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -20,7 +19,8 @@ import { useQRCodes } from "@/hooks/useQRCodes";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { QrCode, BarChart3, Target, Star } from "lucide-react";
 
 const createQRCodeSchema = z.object({
   name: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
@@ -56,126 +56,166 @@ export default function DashboardPage() {
     ? Math.round((totalClicks / qrCodes.length) * 100)
     : 0;
 
+  const router = useRouter();
+
+  function handleUpdatePlan() {
+    router.push('/dashboard/plans');
+  }
+
   return (
     <div className="space-y-8">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de QR Codes</CardTitle>
-            <span className="text-lg">📱</span>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{qrCodes.length}</div>
-            <p className="text-xs text-muted-foreground">
-              {isLoading ? 'Carregando...' : `${qrCodes.length} QR Codes ativos`}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-12 gap-6">
+        <div className="relative bg-white rounded-2xl p-8 border border-gray-100 hover:border-gray-200 transition-all group">
+          <div className="absolute -top-4 -left-4 w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+            <QrCode className="w-6 h-6 text-primary" />
+          </div>
+          <div className="">
+            <h3 className="text-md font-semibold text-gray-900 mb-2">
+              QR Codes
+            </h3>
+            <div className="text-5xl font-bold text-primary mb-1">
+              {qrCodes.length}
+            </div>
+            <p className="text-gray-400 text-sm">
+              {isLoading ? 'Carregando...' : `QR Codes ativos`}
             </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Escaneamentos</CardTitle>
-            <span className="text-lg">📊</span>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalClicks}</div>
-            <p className="text-xs text-muted-foreground">
-              {isLoading ? 'Carregando...' : `${totalClicks} escaneamentos totais`}
+          </div>
+        </div>
+
+        <div className="relative bg-white rounded-2xl p-8 border border-gray-100 hover:border-gray-200 transition-all group">
+          <div className="absolute -top-4 -left-4 w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+            <BarChart3 className="w-6 h-6 text-primary" />
+          </div>
+          <div className="">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Acessos
+            </h3>
+            <div className="text-5xl font-bold text-primary mb-1">
+              {totalClicks}
+            </div>
+            <p className="text-gray-400 text-sm">
+              {isLoading ? 'Carregando...' : `Acessos totais`}
             </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Taxa de Cliques</CardTitle>
-            <span className="text-lg">🎯</span>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{clickRate}%</div>
-            <p className="text-xs text-muted-foreground">
+          </div>
+        </div>
+
+        <div className="relative bg-white rounded-2xl p-8 border border-gray-100 hover:border-gray-200 transition-all group">
+          <div className="absolute -top-4 -left-4 w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+            <Target className="w-6 h-6 text-primary" />
+          </div>
+          <div className="">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Taxa de Acessos
+            </h3>
+            <div className="text-5xl font-bold text-primary mb-1">
+              {clickRate}%
+            </div>
+            <p className="text-gray-400 text-sm">
               {isLoading ? 'Carregando...' : 'Média por QR Code'}
             </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Plano Atual</CardTitle>
-            <span className="text-lg">⭐</span>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">Essencial</div>
-            <p className="text-xs text-muted-foreground">
-              1 QR Code disponível
+          </div>
+        </div>
+
+        <div className="relative bg-white rounded-2xl p-8 border border-gray-100 hover:border-gray-200 transition-all group">
+          <div className="absolute -top-4 -left-4 w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+            <Star className="w-6 h-6 text-primary" />
+          </div>
+          <div className="">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Plano Atual
+            </h3>
+            <div className="text-3xl font-bold text-primary my-3 capitalize">
+              {session?.user?.plan === 'basic' ? 'Básico' : 'Completo'}
+            </div>
+            <p className="text-gray-400 text-sm">
+              {session?.user?.plan === 'basic' ? '1 QR Code disponível' : 'Ilimitado'}
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
 
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-7">
-          <CardHeader>
-            <CardTitle>QR Codes Ativos</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {error && (
-              <div className="text-red-500 mb-4">
-                Erro ao carregar QR Codes: {error}
+      <div className="mt-12">
+        <div className="bg-white rounded-2xl p-8 border border-gray-100">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">QR Codes Ativos</h2>
+          
+          {error && (
+            <div className="text-red-500 mb-4 p-4 bg-red-50 rounded-xl">
+              Erro ao carregar QR Codes: {error}
+            </div>
+          )}
+          
+          <div className="space-y-6">
+            {isLoading ? (
+              <div className="text-center py-12 text-gray-500">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                Carregando QR Codes...
               </div>
-            )}
-            
-            <div className="space-y-6">
-              {isLoading ? (
-                <div className="text-center py-8 text-gray-500">Carregando QR Codes...</div>
-              ) : qrCodes.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
-                  Nenhum QR Code criado ainda. Crie seu primeiro QR Code!
+            ) : qrCodes.length === 0 ? (
+              <div className="text-center pt-8 mb-6 text-gray-500">
+                <div className="mb-4">
+                  <QrCode className="w-12 h-12 mx-auto text-gray-400" />
                 </div>
-              ) : (
-                qrCodes.map(qr => (
-                  <div key={qr.id} className="bg-gray-50/50 backdrop-blur-sm rounded-xl p-6 hover:bg-gray-50 transition-all duration-300">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="text-gray-800 font-medium">{qr.name}</h4>
-                        <p className="text-gray-500 text-sm">{qr.shortUrl}</p>
-                        <div className="mt-3 flex items-center gap-3">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            Ativo
-                          </span>
-                          <span className="text-sm text-gray-500">
-                            Criado {format(new Date(qr.createdAt), "dd 'de' MMMM", { locale: ptBR })}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <div className="text-right">
-                          <div className="text-sm font-medium text-gray-500">Escaneamentos</div>
-                          <div className="text-2xl font-bold text-gray-800">{qr.clicks}</div>
-                        </div>
-                        <button className="text-primary hover:text-primary-600 font-medium">
-                          Editar link
-                        </button>
+                Nenhum QR Code criado ainda.
+              </div>
+            ) : (
+              qrCodes.map(qr => (
+                <div key={qr.id} className="bg-gray-50 rounded-xl p-6 hover:bg-gray-100/80 transition-all duration-300">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900">{qr.name}</h4>
+                      <p className="text-gray-600 mt-1">{qr.shortUrl}</p>
+                      <div className="mt-4 flex items-center gap-3">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          Ativo
+                        </span>
+                        <span className="text-sm text-gray-500">
+                          Criado {format(new Date(qr?.createdAt || ''), "dd 'de' MMMM", { locale: ptBR })}
+                        </span>
                       </div>
                     </div>
+                    <div className="flex items-center gap-6">
+                      <div className="text-right">
+                        <div className="text-sm font-medium text-gray-500">Acessos</div>
+                        <div className="text-2xl font-bold text-primary">{qr.clicks}</div>
+                      </div>
+                      <button className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/5 text-primary hover:bg-primary/10 transition-colors">
+                        Editar
+                      </button>
+                    </div>
                   </div>
-                ))
-              )}
-            </div>
+                </div>
+              ))
+            )}
+          </div>
 
-            {/* Botão e Modal de Criar QR Code */}
-            <Dialog open={open} onOpenChange={setOpen}>
-              <DialogTrigger asChild>
+          {/* Botão e Modal de Criar QR Code */}
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild className="block">
+              {session?.user?.plan === 'basic' && qrCodes.length < 1 ? (
                 <Button 
-                  className="w-full mt-6" 
+                  className="bg-primary hover:bg-primary/90 !mx-auto rounded-full text-white"
+                  size="lg" 
                   disabled={isLoading || qrCodes.length >= 1}
                 >
-                  {qrCodes.length >= 1 
-                    ? 'Limite de QR Codes atingido' 
-                    : 'Criar Novo QR Code'
-                  }
+                  Criar Agora
                 </Button>
-              </DialogTrigger>
+              ) : (
+                <div className="flex items-center justify-center gap-4 mt-6">
+                  <span className="text-gray-500">Limite de QR Codes atingido <Button 
+                    className="bg-primary !mx-auto hover:bg-primary/90 text-white rounded-full"
+                    size="lg"
+                    onClick={() => handleUpdatePlan()}
+                  >
+                    Atualizar Plano
+                  </Button></span>
+                  
+                </div>
+              )} 
+            </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Criar Novo QR Code</DialogTitle>
-                  <DialogDescription>
+                  <DialogTitle className="text-2xl font-semibold text-gray-900">Criar Novo QR Code</DialogTitle>
+                  <DialogDescription className="text-gray-500 mb-4">
                     Preencha as informações abaixo para criar seu QR Code dinâmico.
                   </DialogDescription>
                 </DialogHeader>
@@ -185,6 +225,7 @@ export default function DashboardPage() {
                     <Input
                       id="name"
                       placeholder="Ex: Cardápio Digital"
+                      className="h-12 !rounded-md"
                       {...register('name')}
                       disabled={isSubmitting}
                     />
@@ -197,6 +238,7 @@ export default function DashboardPage() {
                     <Label htmlFor="url">URL de Destino</Label>
                     <Input
                       id="url"
+                      className="h-12 !rounded-md"
                       placeholder="https://seu-site.com/pagina"
                       {...register('url')}
                       disabled={isSubmitting}
@@ -206,14 +248,13 @@ export default function DashboardPage() {
                     )}
                   </div>
 
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                  <Button type="submit" size="lg" className="!ml-auto cursor-pointer rounded-full block" disabled={isSubmitting}>
                     {isSubmitting ? 'Criando...' : 'Criar QR Code'}
                   </Button>
                 </form>
               </DialogContent>
             </Dialog>
-          </CardContent>
-        </Card>
+          </div>
       </div>
     </div>
   );
