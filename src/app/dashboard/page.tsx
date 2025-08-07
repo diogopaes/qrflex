@@ -20,7 +20,8 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
-import { QrCode, BarChart3, Target, Star } from "lucide-react";
+import { QrCode, BarChart3, Target, Star, Eye, Download } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 
 const createQRCodeSchema = z.object({
   name: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
@@ -32,6 +33,10 @@ type CreateQRCodeForm = z.infer<typeof createQRCodeSchema>;
 export default function DashboardPage() {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
+  const [viewQRCode, setViewQRCode] = useState<{ isOpen: boolean; qrCode: any }>({
+    isOpen: false,
+    qrCode: null
+  });
   const { qrCodes, isLoading, error, createQRCode } = useQRCodes();
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<CreateQRCodeForm>({
     resolver: zodResolver(createQRCodeSchema)
@@ -178,9 +183,18 @@ export default function DashboardPage() {
                         <div className="text-sm font-medium text-gray-500">Acessos</div>
                         <div className="text-2xl font-bold text-primary">{qr.clicks}</div>
                       </div>
-                      <button className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/5 text-primary hover:bg-primary/10 transition-colors">
-                        Editar
-                      </button>
+                                              <div className="flex gap-2">
+                          <button 
+                            onClick={() => setViewQRCode({ isOpen: true, qrCode: qr })}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
+                          >
+                            <Eye className="w-4 h-4" />
+                            Visualizar
+                          </button>
+                          <button className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/5 text-primary hover:bg-primary/10 transition-colors">
+                            Editar
+                          </button>
+                        </div>
                     </div>
                   </div>
                 </div>
@@ -252,6 +266,69 @@ export default function DashboardPage() {
                     {isSubmitting ? 'Criando...' : 'Criar QR Code'}
                   </Button>
                 </form>
+              </DialogContent>
+            </Dialog>
+
+            {/* Modal de Visualização do QR Code */}
+            <Dialog open={viewQRCode.isOpen} onOpenChange={(open) => setViewQRCode({ isOpen: open, qrCode: null })}>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-semibold text-gray-900">QR Code</DialogTitle>
+                  <DialogDescription className="text-gray-500">
+                    Escaneie ou faça o download do seu QR Code
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex flex-col items-center justify-center p-6">
+                  {viewQRCode.qrCode && (
+                    <>
+                      <div className="bg-white p-2 rounded-xl shadow-sm border" id="qr-code-container">
+                        <QRCodeSVG
+                          value={viewQRCode.qrCode.shortUrl}
+                          size={200}
+                          level="H"
+                          includeMargin
+                          imageSettings={{
+                            src: "/logo.png",
+                            height: 24,
+                            width: 24,
+                            excavate: true,
+                          }}
+                        />
+                      </div>
+                      <Button
+                        onClick={() => {
+                          const svg = document.getElementById("qr-code-container")?.querySelector("svg");
+                          if (svg) {
+                            const canvas = document.createElement("canvas");
+                            const ctx = canvas.getContext("2d");
+                            const data = new XMLSerializer().serializeToString(svg);
+                            const img = new Image();
+                            
+                            img.onload = () => {
+                              canvas.width = 1000;
+                              canvas.height = 1000;
+                              ctx?.drawImage(img, 0, 0, 1000, 1000);
+                              
+                              const link = document.createElement("a");
+                              link.download = `qrcode-${viewQRCode.qrCode.name}.png`;
+                              link.href = canvas.toDataURL("image/png");
+                              document.body.appendChild(link);
+                              link.click();
+                              document.body.removeChild(link);
+                            };
+                            
+                            img.src = `data:image/svg+xml;base64,${btoa(data)}`;
+                          }
+                        }}
+                        className="mt-6 bg-primary hover:bg-primary/90 text-white rounded-full inline-flex items-center gap-2"
+                        size="lg"
+                      >
+                        <Download className="w-4 h-4" />
+                        Baixar PNG
+                      </Button>
+                    </>
+                  )}
+                </div>
               </DialogContent>
             </Dialog>
           </div>
