@@ -11,6 +11,9 @@ import {
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { Settings, LogOut, Star, User, Home } from "lucide-react";
+import { useState } from "react";
+import { AccountModal } from "@/components/AccountModal";
+import { useUpgradePlan } from "@/hooks/useUpgradePlan";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function getInitials(name: string) {
@@ -23,9 +26,26 @@ function getInitials(name: string) {
 }
 
 export default function HeaderDashboard({ session }: { session: any }) {
+  const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
+  const { upgrade } = useUpgradePlan();
   const userInitials = session?.user?.name ? getInitials(session.user.name) : '??';
   const planLabel = session?.user?.plan === 'basic' ? 'Básico' : 'Completo';
   const planColor = session?.user?.plan === 'basic' ? 'text-yellow-500 bg-yellow-100' : 'text-primary bg-primary/10';
+
+  async function handleGenratedLinkToPortal() {
+    const res = await fetch("/api/stripe/portal", {
+      method: "POST",
+    });
+
+    const data = await res.json();
+    if (data?.url) {
+      window.location.href = data.url; 
+    }
+  };
+
+  async function handleManageSubscription() {
+    await handleGenratedLinkToPortal();
+  }
 
   return (
     <header className="bg-white border-b border-gray-200 h-16 fixed left-0 right-0 top-0 z-30">
@@ -42,7 +62,7 @@ export default function HeaderDashboard({ session }: { session: any }) {
             </span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="relative h-8 w-8 rounded-full">
+                <Button variant="ghost" size="sm" className="relative cursor-pointer h-8 w-8 rounded-full">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={session?.user?.image || ''} alt={session?.user?.name || ''} />
                     <AvatarFallback className="bg-primary/10 text-primary">
@@ -65,31 +85,24 @@ export default function HeaderDashboard({ session }: { session: any }) {
                     Dashboard
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer" onSelect={() => setIsAccountModalOpen(true)}>
                   <User className="mr-2 h-8 w-4" />
-                  <Link href="/dashboard/settings" className="w-full">
-                    Minha Conta
-                  </Link>
+                  Minha Conta
                 </DropdownMenuItem>
-                {/* <DropdownMenuItem>
-                  <Star className="mr-2 h-8 w-4" />
-                  <Link href="/dashboard/plans" className="w-full">
-                    Planos
-                  </Link>
-                </DropdownMenuItem> */}
-                {/* <DropdownMenuItem>
-                  <Settings className="mr-2 h-6 w-4" />
-                  <Link href="/dashboard/settings" className="w-full">
-                    Configurações
-                  </Link>
-                </DropdownMenuItem> */}
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-400 focus:text-red-400" onClick={() => signOut()}>
+                <DropdownMenuItem className="text-red-400 cursor-pointer focus:text-red-400" onClick={() => signOut()}>
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>Sair</span>
+                  Sair
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            <AccountModal 
+              isOpen={isAccountModalOpen}
+              onClose={() => setIsAccountModalOpen(false)}
+              session={session}
+              onManageSubscription={handleManageSubscription}
+            />
           </div>
         </div>
       </div>
