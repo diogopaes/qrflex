@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { Settings, LogOut, Star, User } from "lucide-react";
+import { Settings, LogOut, Star, User, Home } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function getInitials(name: string) {
@@ -59,6 +59,12 @@ export default function HeaderDashboard({ session }: { session: any }) {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator/>
+                <DropdownMenuItem>
+                  <Home className="mr-2 h-8 w-4" />
+                  <Link href="/dashboard" className="w-full">
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>
                   <User className="mr-2 h-8 w-4" />
                   <Link href="/dashboard/settings" className="w-full">
