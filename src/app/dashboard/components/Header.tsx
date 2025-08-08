@@ -60,42 +60,14 @@ export default function HeaderDashboard({ session }: { session: any }) {
                 {planLabel}
               </span>
             </span>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="relative cursor-pointer h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={session?.user?.image || ''} alt={session?.user?.name || ''} />
-                    <AvatarFallback className="bg-primary/10 text-primary">
-                      {userInitials}
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-2 py-1">
-                    <p className="text-sm font-medium leading-none">{session?.user?.name}</p>
-                    <p className="text-xs leading-none text-gray-500">{session?.user?.email}</p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator/>
-                <DropdownMenuItem>
-                  <Home className="mr-2 h-8 w-4" />
-                  <Link href="/dashboard" className="w-full">
-                    Dashboard
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer" onSelect={() => setIsAccountModalOpen(true)}>
-                  <User className="mr-2 h-8 w-4" />
-                  Minha Conta
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-400 cursor-pointer focus:text-red-400" onClick={() => signOut()}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Sair
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Button variant="ghost" size="sm" onClick={() => setIsAccountModalOpen(true)} className="relative cursor-pointer h-8 w-8 rounded-full">
+              <Avatar className="h-8 w-8 hover:scale-110 transition-all duration-300">
+                <AvatarImage src={session?.user?.image || ''} alt={session?.user?.name || ''} />
+                <AvatarFallback className="bg-primary/10 text-primary">
+                  {userInitials}
+                </AvatarFallback>
+              </Avatar>
+            </Button>
 
             <AccountModal 
               isOpen={isAccountModalOpen}

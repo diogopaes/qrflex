@@ -1,5 +1,6 @@
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import * as admin from "firebase-admin";
 
 const firebaseAdminConfig = {
   credential: cert({
@@ -9,13 +10,16 @@ const firebaseAdminConfig = {
   }),
 };
 
-export function customInitApp() {
+function customInitApp() {
   if (getApps().length <= 0) {
     initializeApp(firebaseAdminConfig);
   }
 }
 
-export const adminDb = () => {
+function adminDb() {
   customInitApp();
   return getFirestore();
 }; 
+
+
+export { adminDb, admin };

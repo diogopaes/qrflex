@@ -20,7 +20,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
-import { QrCode, BarChart3, Target, Star, Eye, Download, Edit, AlertCircle } from "lucide-react";
+import { QrCode, BarChart3, Target, Star, Eye, Download, Edit, AlertCircle, ChevronRight, ChartBar, ChartLine } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { DashboardSkeleton } from "@/components/DashboardSkeleton";
 import { useUpgradePlan } from "@/hooks/useUpgradePlan";
@@ -111,7 +111,7 @@ export default function DashboardPage() {
                   <span>***</span>
                   <button
                     onClick={handleUpdatePlan}
-                    className="text-xs bg-yellow-200 cursor-pointer font-medium text-yellow-500 px-2 py-1 rounded-full hover:scale-105 transition-all"
+                    className="text-[8px] bg-yellow-200 cursor-pointer font-medium text-yellow-500 px-2 py-1 rounded-full hover:scale-105 transition-all"
                   >
                     Atualizar
                   </button>
@@ -147,7 +147,7 @@ export default function DashboardPage() {
                   <span>***</span>
                   <button
                     onClick={handleUpdatePlan}
-                    className="text-xs cursor-pointer bg-yellow-200 font-medium text-yellow-500 px-2 py-1 rounded-full hover:scale-105 transition-all"
+                    className="text-[8px] cursor-pointer bg-yellow-200 font-medium text-yellow-500 px-2 py-1 rounded-full hover:scale-105 transition-all"
                   >
                     Atualizar
                   </button>
@@ -188,7 +188,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="mt-12">
-        <div className="bg-white relative rounded-2xl p-8 border border-gray-100">
+        <div className="bg-white relative rounded-2xl p-4 md:p-8 border border-gray-100">
           <div className="absolute -top-4 -left-4 md:w-12 md:h-12 w-10 h-10 bg-primary/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
             <QrCode className="md:w-6 md:h-6  text-primary" />
           </div>
@@ -218,35 +218,44 @@ export default function DashboardPage() {
                 qrCodes.map(qr => (
                 <div key={qr.id} className="bg-gray-50/50 border border-gray-100 rounded-xl p-6 hover:bg-gray-100/80 transition-all duration-300">
                   <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-                      <div>
-                      <h4 className="text-lg font-semibold text-gray-900">{qr.name}</h4>
-                      <p className="text-gray-600 mt-1">{qr.url}</p>
-                      <div className="mt-4 flex items-center gap-3">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <div>
+                      <div className="flex items-center gap-3">
+                        <span className="inline-flex items-center py-1 px-2 rounded-full text-[10px] font-medium bg-green-100 text-green-800">
                             Ativo
                           </span>
-                        {qr?.createdAt && (
-                          <span className="text-sm text-gray-500">
+                        {qr?.createdAt ? (
+                          <span className="text-xs text-gray-500">
                             Criado {format(new Date(qr?.createdAt || ''), "dd 'de' MMMM", { locale: ptBR })}
+                          </span>
+                        ) : (
+                          <span className="text-xs text-gray-500">
+                            Criado há alguns segundos
                           </span>
                         )}
                       </div>
-                        </div>
+                      <div className="flex items-center gap-2 mt-1">
+                        <h4 className="md:text-md text-sm whitespace-nowrap font-semibold text-gray-900">{qr.name}</h4>
+                        <ChevronRight className="w-4 h-4 text-gray-500" />
+                        <p className="text-gray-600 md:text-sm text-xs truncate max-w-[180px] md:max-w-none">
+                          {qr.url}
+                        </p>
+                      </div>
+                    </div>
                     <div className="flex items-center gap-6">
                       <div className="flex items-center gap-2">
-                        <div className="text-sm font-medium text-gray-500">Acessos</div>
+                        <ChartLine className="w-4 h-4 text-gray-500" />
                         {session?.user?.plan === 'basic' ? (
                           <div className="flex items-center gap-2">
                             <div className="text-2xl font-bold text-gray-300">***</div>
                             <button
                               onClick={handleUpdatePlan}
-                              className="text-xs cursor-pointer bg-yellow-200 font-medium text-yellow-500 px-2 py-1 rounded-full hover:scale-105 transition-all"
+                              className="text-[8px] cursor-pointer bg-yellow-200 font-medium text-yellow-500 px-2 py-1 rounded-full hover:scale-105 transition-all"
                             >
                               Atualizar
                         </button>
                           </div>
                         ) : (
-                          <div className="text-2xl font-bold text-primary">{qr.clicks}</div>
+                          <div className="text-lg font-bold text-primary">{qr.clicks}</div>
                         )}
                       </div>
                          <div className="flex gap-2">

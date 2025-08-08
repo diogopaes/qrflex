@@ -25,7 +25,7 @@ export default function Home() {
         {status === 'authenticated' ? (
           <Link
             href="/dashboard"
-            className="bg-primary text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-700 transition-colors"
+            className="bg-primary text-white px-6 py-2 rounded-full font-semibold hover:scale-105 transition-colors"
           >
             Dashboard
           </Link>
