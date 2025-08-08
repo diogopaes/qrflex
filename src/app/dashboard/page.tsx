@@ -22,6 +22,7 @@ import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 import { QrCode, BarChart3, Target, Star, Eye, Download, Edit, AlertCircle } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
+import { DashboardSkeleton } from "@/components/DashboardSkeleton";
 import { useUpgradePlan } from "@/hooks/useUpgradePlan";
 
 const createQRCodeSchema = z.object({
@@ -72,12 +73,9 @@ export default function DashboardPage() {
     await upgrade();
   }
 
-  if(isLoading || loading) {
-    return <div className="flex flex-col items-center justify-center h-screen">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-      Atualizando plano...
-    </div>
-  }
+     if(isLoading || loading) {
+     return <DashboardSkeleton />
+   }
 
   return (
     <div className="space-y-8">
@@ -164,8 +162,8 @@ export default function DashboardPage() {
                   {clickRate}%
                 </div>
                 <p className="text-gray-400 md:text-sm text-xs">
-                  {isLoading ? 'Carregando...' : 'Média por QR Code'}
-                </p>
+              {isLoading ? 'Carregando...' : 'Média por QR Code'}
+            </p>
               </>
             )}
           </div>
@@ -196,44 +194,44 @@ export default function DashboardPage() {
           </div>
           <h2 className="text-2xl font-semibold text-gray-900 mb-6">QR Codes Ativos</h2>
           
-          {error && (
+            {error && (
             <span className="text-red-500 mb-4 p-4 flex items-center w-auto gap-2 bg-red-50 rounded-xl">
               <AlertCircle className="w-6 h-6 text-red-500" />
-              Erro ao carregar QR Codes: {error}
+                Erro ao carregar QR Codes: {error}
             </span>
-          )}
-          
-          <div className="space-y-6">
-            {isLoading ? (
+            )}
+            
+            <div className="space-y-6">
+              {isLoading ? (
               <div className="text-center py-12 text-gray-500">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
                 Carregando QR Codes...
               </div>
-            ) : qrCodes.length === 0 ? (
+              ) : qrCodes.length === 0 ? (
               <div className="text-center pt-8 mb-6 text-gray-500">
                 <div className="mb-4">
                   <QrCode className="w-12 h-12 mx-auto text-gray-400" />
                 </div>
                 Nenhum QR Code criado ainda.
-              </div>
-            ) : (
-              qrCodes.map(qr => (
+                </div>
+              ) : (
+                qrCodes.map(qr => (
                 <div key={qr.id} className="bg-gray-50/50 border border-gray-100 rounded-xl p-6 hover:bg-gray-100/80 transition-all duration-300">
                   <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-                    <div>
+                      <div>
                       <h4 className="text-lg font-semibold text-gray-900">{qr.name}</h4>
                       <p className="text-gray-600 mt-1">{qr.url}</p>
                       <div className="mt-4 flex items-center gap-3">
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          Ativo
-                        </span>
+                            Ativo
+                          </span>
                         {qr?.createdAt && (
                           <span className="text-sm text-gray-500">
                             Criado {format(new Date(qr?.createdAt || ''), "dd 'de' MMMM", { locale: ptBR })}
                           </span>
                         )}
                       </div>
-                    </div>
+                        </div>
                     <div className="flex items-center gap-6">
                       <div className="flex items-center gap-2">
                         <div className="text-sm font-medium text-gray-500">Acessos</div>
@@ -245,7 +243,7 @@ export default function DashboardPage() {
                               className="text-xs cursor-pointer bg-yellow-200 font-medium text-yellow-500 px-2 py-1 rounded-full hover:scale-105 transition-all"
                             >
                               Atualizar
-                            </button>
+                        </button>
                           </div>
                         ) : (
                           <div className="text-2xl font-bold text-primary">{qr.clicks}</div>
@@ -273,66 +271,66 @@ export default function DashboardPage() {
                             <span className="hidden md:block">Editar</span>
                           </button>
                         </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
-            )}
-          </div>
+                ))
+              )}
+            </div>
 
-          {/* Botão e Modal de Criar QR Code */}
+            {/* Botão e Modal de Criar QR Code */}
           {session?.user?.plan === 'premium' || qrCodes.length < 1 ? (
-                <Dialog open={open} onOpenChange={setOpen}>
+            <Dialog open={open} onOpenChange={setOpen}>
                   <DialogTrigger asChild className="block">
-                    <Button 
+                <Button 
                         className="bg-primary text-lg hover:scale-105 mt-6 transition-all cursor-pointer hover:bg-primary/90 !mx-auto rounded-full text-white"
                         size="lg" 
-                      >
+                >
                         {qrCodes.length < 1 ? 'Crier seu QRCode' : 'Criar Novo QRCode'}
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
                       <DialogTitle className="text-2xl font-semibold text-gray-900">Criar Novo QR Code</DialogTitle>
                       <DialogDescription className="text-gray-500 mb-4">
-                        Preencha as informações abaixo para criar seu QR Code dinâmico.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="name">Nome do QR Code</Label>
-                        <Input
-                          id="name"
-                          placeholder="Ex: Cardápio Digital"
+                    Preencha as informações abaixo para criar seu QR Code dinâmico.
+                  </DialogDescription>
+                </DialogHeader>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Nome do QR Code</Label>
+                    <Input
+                      id="name"
+                      placeholder="Ex: Cardápio Digital"
                           className="h-12 !rounded-md"
-                          {...register('name')}
-                          disabled={isSubmitting}
-                        />
-                        {errors.name && (
-                          <p className="text-sm text-red-500">{errors.name.message}</p>
-                        )}
-                      </div>
-    
-                      <div className="space-y-2">
-                        <Label htmlFor="url">URL de Destino</Label>
-                        <Input
-                          id="url"
+                      {...register('name')}
+                      disabled={isSubmitting}
+                    />
+                    {errors.name && (
+                      <p className="text-sm text-red-500">{errors.name.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="url">URL de Destino</Label>
+                    <Input
+                      id="url"
                           className="h-12 !rounded-md"
-                          placeholder="https://seu-site.com/pagina"
-                          {...register('url')}
-                          disabled={isSubmitting}
-                        />
-                        {errors.url && (
-                          <p className="text-sm text-red-500">{errors.url.message}</p>
-                        )}
-                      </div>
-    
+                      placeholder="https://seu-site.com/pagina"
+                      {...register('url')}
+                      disabled={isSubmitting}
+                    />
+                    {errors.url && (
+                      <p className="text-sm text-red-500">{errors.url.message}</p>
+                    )}
+                  </div>
+
                       <Button type="submit" size="lg" className="!ml-auto cursor-pointer rounded-full block" disabled={isSubmitting}>
-                        {isSubmitting ? 'Criando...' : 'Criar QR Code'}
-                      </Button>
-                    </form>
-                  </DialogContent>
-                </Dialog>
+                    {isSubmitting ? 'Criando...' : 'Criar QR Code'}
+                  </Button>
+                </form>
+              </DialogContent>
+            </Dialog>
               ) : (
                 <div className="flex items-center justify-center !mx-auto gap-2 mt-6">
                   <span className="text-gray-500">Limite de QR Codes atingido, no plano Básico.</span> 
