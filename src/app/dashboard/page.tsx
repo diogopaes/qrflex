@@ -73,9 +73,9 @@ export default function DashboardPage() {
     await upgrade();
   }
 
-     if(isLoading || loading) {
+  if(isLoading || loading) {
      return <DashboardSkeleton />
-   }
+  }
 
   return (
     <div className="space-y-8">
@@ -290,12 +290,12 @@ export default function DashboardPage() {
             {/* Botão e Modal de Criar QR Code */}
           {session?.user?.plan === 'premium' || qrCodes.length < 1 ? (
             <Dialog open={open} onOpenChange={setOpen}>
-                  <DialogTrigger asChild className="block">
+              <DialogTrigger asChild className="block">
                 <Button 
                         className="bg-primary text-lg hover:scale-105 mt-6 transition-all cursor-pointer hover:bg-primary/90 !mx-auto rounded-full text-white"
                         size="lg" 
                 >
-                        {qrCodes.length < 1 ? 'Crier seu QRCode' : 'Criar Novo QRCode'}
+                        {qrCodes.length < 1 ? 'Criar primeiro QRCode' : 'Criar QRCode'}
                 </Button>
               </DialogTrigger>
               <DialogContent>
@@ -340,7 +340,7 @@ export default function DashboardPage() {
                 </form>
               </DialogContent>
             </Dialog>
-              ) : (
+          ) : (
                 <div className="flex items-center justify-center !mx-auto gap-2 mt-6">
                   <span className="text-gray-500">Limite de QR Codes atingido, no plano Básico.</span> 
                   <Button 

@@ -1,3 +1,5 @@
+'use client';
+
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function DashboardSkeleton() {
@@ -67,21 +69,23 @@ export function DashboardSkeleton() {
               <div key={i} className="bg-gray-50/50 border border-gray-100 rounded-xl p-6">
                 <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
                   <div className="space-y-4">
-                    <Skeleton className="h-6 w-48" />
-                    <Skeleton className="h-4 w-64" />
                     <div className="flex items-center gap-3">
                       <Skeleton className="h-6 w-16 rounded-full" />
                       <Skeleton className="h-4 w-32" />
                     </div>
+                    <div className="flex items-center gap-2">
+                      <Skeleton className="h-6 w-48" />
+                      <Skeleton className="h-6 w-64" />
+                    </div>
                   </div>
-                  <div className="flex items-center gap-6">
-                    <div className="text-right">
-                      <Skeleton className="h-4 w-16 mb-1" />
-                      <Skeleton className="h-8 w-12" />
+                  <div className="flex items-center gap-4">
+                    <div className="text-right flex gap-2">
+                      <Skeleton className="h-7 w-10 " />
+                      <Skeleton className="h-7 w-6" />
                     </div>
                     <div className="flex gap-2">
-                      <Skeleton className="h-10 w-24 rounded-full" />
-                      <Skeleton className="h-10 w-24 rounded-full" />
+                      <Skeleton className="h-10 w-22 rounded-full" />
+                      <Skeleton className="h-10 w-22 rounded-full" />
                     </div>
                   </div>
                 </div>
