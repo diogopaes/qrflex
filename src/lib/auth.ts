@@ -15,15 +15,18 @@ const config = {
       if (account?.provider === 'google') {
         try {
           const userDoc = adminDb().collection('users').doc(user.id);
-          await userDoc.set({
-            email: user.email,
-            name: user.name,
-            image: user.image,
-            plan: 'none',
-            lastSignIn: new Date(),
-            provider: account.provider,
-          }, { merge: true });
-          
+          const userData = await userDoc.get();
+          if(!userData.exists) {
+            await userDoc.set({
+              email: user.email,
+              name: user.name,
+              image: user.image,
+              plan: 'none',
+              lastSignIn: new Date(),
+              provider: account.provider,
+            }, { merge: true });
+          }
+
           return true;
         } catch (error) {
           console.error('Erro ao salvar usuário no Firebase:', error);

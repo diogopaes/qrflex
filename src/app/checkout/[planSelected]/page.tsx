@@ -11,10 +11,14 @@ export default async function CheckoutStartPage({ params }: any) {
         redirect("/"); 
     }
 
+    if (session?.user?.plan !== 'none') {
+        redirect("/dashboard");
+    }
+
     const plan = queryParams?.planSelected;
 
     if (!plan) {
-        redirect("/dashboard");
+        redirect("/dashboard/plans");
     }
 
     const baseURL = process.env.NEXT_PUBLIC_APP_URL;
