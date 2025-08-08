@@ -1,12 +1,12 @@
 'use client';
 
-import { useSession, signIn } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import plan from '@/mock/plan.json';
-import Link from 'next/link';
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
     
 export default function Home() {
-  const { status } = useSession();
 
   async function handleSignIn(planSelected: string) {
     await signIn("google", {
@@ -16,29 +16,7 @@ export default function Home() {
 
   return (
     <div className="pt-16">
-      <header className="fixed top-0 left-0 right-0 bg-white z-50">
-      <div className="container mx-auto px-6 h-18 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold text-primary">
-          QRFlix
-        </Link>
-
-        {status === 'authenticated' ? (
-          <Link
-            href="/dashboard"
-            className="bg-primary text-white px-6 py-2 rounded-full font-semibold hover:scale-105 transition-colors"
-          >
-            Dashboard
-          </Link>
-        ) : (
-          <button
-            onClick={() => handleSignIn('basic')}
-            className="bg-primary text-white px-6 py-2 rounded-full font-semibold hover:scale-105 transition-colors cursor-pointer"
-          >
-            Começar Agora
-          </button>
-        )}
-      </div>
-    </header>
+      <Header />
       <main className="min-h-screen">
         {/* Hero Section */}
         <section className="flex items-center">
@@ -502,28 +480,7 @@ export default function Home() {
         </section>
 
         {/* Footer */}
-        <footer className="py-12 bg-gray-50/50 border-t border-gray-100">
-          <div className="container mx-auto px-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-              <div className="flex flex-col gap-2">
-                <div className="text-2xl font-bold text-primary">
-                  QRFlex
-                </div>
-                <div className="text-sm text-gray-600">
-                  © 2025 QR Flex
-                </div>
-              </div>
-              <div className="flex items-center gap-6 text-sm">
-                <button className="text-gray-600 hover:text-primary transition-colors font-medium">
-                  Termos
-                </button>
-                <button className="text-gray-600 hover:text-primary transition-colors font-medium">
-                  Política de Privacidade
-                </button>
-              </div>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </main>
     </div>
   );

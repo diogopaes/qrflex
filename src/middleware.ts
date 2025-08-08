@@ -6,7 +6,7 @@ export const config = {
 
 export async function middleware(req: NextRequest) {
   const id = req.nextUrl.pathname.split("/qr/")[1];
-  
+
   if (!id) return NextResponse.next();
 
   const trackRes = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/track`, {
@@ -20,6 +20,14 @@ export async function middleware(req: NextRequest) {
   }
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/get-link?id=${id}`);
+  if (res.status === 403) {
+    return NextResponse.redirect(new URL("/blocked", req.url));
+  }
+
+  if (!res.ok) {
+    return NextResponse.redirect(new URL("/not-found", req.url));
+  }
+
   const { url } = await res.json();
 
   if (!url) {

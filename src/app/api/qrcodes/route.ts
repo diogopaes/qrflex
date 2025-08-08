@@ -4,6 +4,24 @@ import { adminDb } from '@/config/firebase';
 import { nanoid } from 'nanoid';
 import { Timestamp } from 'firebase-admin/firestore';
 
+async function generateUniqueShortId(): Promise<string> {
+  let shortId = "";
+  let exists = true;
+
+  while (exists) {
+    shortId = nanoid(8);
+    const query = await adminDb()
+      .collection("qrcodes")
+      .where("shortId", "==", shortId)
+      .limit(1)
+      .get();
+
+    exists = !query.empty;
+  }
+
+  return shortId;
+}
+
 export async function POST(req: Request) {
   try {
     const session = await auth();
@@ -14,7 +32,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { name, url } = body;
 
-    const shortId = nanoid(8);
+    const shortId = await generateUniqueShortId();
     const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL}/qr/${shortId}`;
 
     const qrCodeRef = adminDb().collection('qrcodes').doc();

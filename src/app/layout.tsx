@@ -5,8 +5,11 @@ import { NextAuthProvider } from '@/providers/NextAuthProvider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'QRFlex',
-  description: 'QRFlex Application',
+  title: 'QRFlex - Gerador de QR Codes Inteligente',
+  description: 'Gerador de QR Codes Inteligente',
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

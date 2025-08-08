@@ -15,6 +15,7 @@ import { useState } from "react";
 import { AccountModal } from "@/components/AccountModal";
 import { useUpgradePlan } from "@/hooks/useUpgradePlan";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Image from "next/image";
 
 function getInitials(name: string) {
   return name
@@ -52,7 +53,7 @@ export default function HeaderDashboard({ session }: { session: any }) {
       <div className="container mx-auto h-full">
         <div className="px-6 h-full flex items-center justify-between">
           <Link href="/dashboard" className="text-2xl font-bold text-primary">
-            QRFlex
+            <Image src="/logo.svg" alt="QRFlex" width={149} height={32} />
           </Link>
           <div className="flex items-center gap-3">
             <span className="hidden md:flex items-center gap-2">
