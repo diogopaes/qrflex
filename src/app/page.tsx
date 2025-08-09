@@ -78,10 +78,10 @@ export default function Home() {
                           1
                         </div>
                         <h3 className="text-sm font-semibold text-gray-900 mb-1">
-                          QR Codes
+                          QR Code
                         </h3>
                         <p className="text-xs text-gray-400">
-                          Ativos
+                          Ativo
                         </p>
                       </div>
                     </div>
