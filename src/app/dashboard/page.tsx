@@ -82,7 +82,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8">
 
-      <div className="grid grid-cols-2 md:grid-cols-4 mt-12 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 md:mt-12 mt-8 gap-6">
         {/* 1) Acessos */}
         <StatCard
           icon={<BarChart3 className="md:w-6 md:h-6 text-primary" />}
@@ -122,7 +122,7 @@ export default function DashboardPage() {
       </div>
 
 
-      <div className="mt-12">
+      <div className="md:mt-12 mt-6">
         <div className="bg-white relative rounded-2xl p-6 md:p-8 border border-gray-100">
           <div className="absolute -top-4 -left-4 md:w-12 md:h-12 w-10 h-10 bg-primary/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
             <QrCode className="md:w-6 md:h-6  text-primary" />
