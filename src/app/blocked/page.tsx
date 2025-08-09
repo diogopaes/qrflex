@@ -23,7 +23,7 @@ export default function QrBlockedPage() {
 
         <footer className="absolute bottom-10 text-center">
           <Link href="/" className="text-xs text-gray-400 hover:scale-110 transition-transform duration-300 flex items-center justify-center gap-2 border border-gray-200  rounded-full px-4 py-3">
-            Criado com <Image src="/logo-black.svg" alt="QRFlex" width={80} height={20} className="opacity-50" />
+            Criado com <Image src="/logo.svg" alt="QRFlex" width={80} height={20} className="opacity-40" />
           </Link>
         </footer>
       </main>
