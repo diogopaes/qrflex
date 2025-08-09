@@ -7,7 +7,7 @@ export function useUpgradePlan() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const { data: session, update } = useSession();
+  const { update } = useSession();
 
   const upgrade = async () => {
     setLoading(true);

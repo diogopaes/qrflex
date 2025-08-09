@@ -1,14 +1,5 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { signOut } from 'next-auth/react';
 import HeaderDashboard from './components/Header';
 
 export default async function DashboardLayout({

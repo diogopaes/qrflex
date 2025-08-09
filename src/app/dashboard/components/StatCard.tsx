@@ -1,5 +1,3 @@
-import { cn } from "@/lib/utils";
-
 export default function StatCard({
     icon,
     value,
@@ -23,15 +21,12 @@ export default function StatCard({
           {icon}
         </div>
   
-        {/* valor grande primeiro */}
         <div className={`md:text-3xl text-2xl font-bold ${locked ? "text-gray-300" : accent}`}>
           {locked ? "•••" : value}
         </div>
-  
-        {/* rótulo curto */}
+
         <h3 className="mt-1 text-sm md:text-base font-semibold text-gray-900">{label}</h3>
   
-        {/* legenda */}
         <p className="text-gray-400 text-xs mt-1">
           {locked ? (
             <>

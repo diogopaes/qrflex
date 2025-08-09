@@ -1,10 +1,9 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { useState } from 'react';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
-import { QrCode, BarChart3, Eye, Edit, RefreshCw, Target, Zap, CheckCircle2, UtensilsCrossed, Stethoscope, Briefcase, Palette, Printer, BarChart2, Link2, DollarSign, ChevronRight } from "lucide-react";
+import { QrCode, BarChart3, Eye, Edit, RefreshCw, Target, Zap, UtensilsCrossed, Stethoscope, Briefcase, Palette, Printer, BarChart2, Link2, DollarSign, ChevronRight } from "lucide-react";
 import Plans from '@/components/Plans';
 import FaqList from '@/components/Faq';
     

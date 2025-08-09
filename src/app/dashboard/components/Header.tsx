@@ -1,16 +1,6 @@
 'use client'
 import { Button } from "@/components/ui/button";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
-import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { Settings, LogOut, Star, User, Home } from "lucide-react";
 import { useState } from "react";
 import { AccountModal } from "@/components/AccountModal";
 import { useUpgradePlan } from "@/hooks/useUpgradePlan";
