@@ -40,13 +40,13 @@ export default function Home() {
                   <div className="flex flex-col sm:flex-row gap-4">
                     <button
                       onClick={() => handleSignIn('basic')}
-                      className="bg-primary text-white px-8 py-4 rounded-full font-semibold text-md hover:bg-primary-600 transition-all shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30 cursor-pointer"
+                      className="bg-primary hover:scale-105 transition-all duration-300 text-white px-8 py-4 rounded-full font-semibold text-md hover:bg-primary-600 shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30 cursor-pointer"
                     >
                       Começar por R$ 9,90/mês
                     </button>
                     <button
                       onClick={() => document.getElementById('planos')?.scrollIntoView({ behavior: 'smooth' })}
-                      className="bg-white text-gray-600 px-8 py-4 rounded-full font-semibold text-md hover:bg-gray-50 transition-all  cursor-pointer"
+                      className="bg-white text-gray-600 px-8 py-4 rounded-full font-semibold text-md hover:bg-gray-50 transition-all duration-300 hover:scale-105 cursor-pointer"
                     >
                       Ver Planos
                     </button>
@@ -69,39 +69,39 @@ export default function Home() {
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-[0_20px_80px_-15px_rgba(0,0,0,0.3)] p-8">
                   {/* Cards de Estatísticas */}
                   <div className="grid grid-cols-2 gap-4 mb-8">
-                    <div className="relative bg-white rounded-2xl p-4 border border-gray-100">
+                    <div className="relative bg-white flex items-center rounded-2xl p-4 border border-gray-100">
                       <div className="absolute -top-3 -left-3 w-8 h-8 bg-primary/5 rounded-xl flex items-center justify-center">
                         <QrCode className="w-4 h-4 text-primary" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-semibold text-gray-900 mb-1">
-                          QR Codes
-                        </h3>
                         <div className="text-3xl font-bold text-primary">
                           1
                         </div>
+                        <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                          QR Codes
+                        </h3>
                         <p className="text-xs text-gray-400">
-                          QR Codes ativos
+                          Ativos
                         </p>
                       </div>
                     </div>
 
-                    <div className="relative bg-white rounded-2xl p-4 border border-gray-100">
+                    <div className="relative bg-white flex items-center rounded-2xl p-4 border border-gray-100">
                       <div className="absolute -top-3 -left-3 w-8 h-8 bg-primary/5 rounded-xl flex items-center justify-center">
                         <BarChart3 className="w-4 h-4 text-primary" />
                       </div>
                       <div>
+                        <div className="text-3xl font-bold text-gray-300 flex items-center gap-2">
+                          •••
+                        </div>
                         <h3 className="text-sm font-semibold text-gray-900 mb-1">
                           Acessos
                         </h3>
-                        <div className="text-3xl font-bold text-gray-300 flex items-center gap-2">
-                          ***
-                          <span className="md:text-[10px] text-[8px] bg-yellow-200 text-yellow-500 px-2 py-1 rounded-full">
-                            Atualizar
-                          </span>
-                        </div>
                         <p className="text-xs text-gray-400">
                           Disponível no plano Completo
+                          <span className="md:text-[10px] ml-2 pt-1 text-[8px] bg-yellow-200 text-yellow-700 px-2 py-1 rounded-full">
+                            Atualizar
+                          </span>
                         </p>
                       </div>
                     </div>
@@ -121,7 +121,7 @@ export default function Home() {
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <h4 className="text-gray-900 md:text-sm text-xs">Cardápio Digital</h4>
+                            <h4 className="text-gray-900 font-semibold md:text-sm text-xs">Cardápio Digital</h4>
                             <ChevronRight className="w-4 h-4" />
                             <p className="text-gray-600 md:text-sm text-xs">qrflix.com/cardapio-cafe</p>
                           </div>
@@ -150,7 +150,7 @@ export default function Home() {
         </section>
 
         {/* Sessão de Benefícios */}
-        <section className="py-32 bg-white">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-6">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16">
@@ -285,7 +285,7 @@ export default function Home() {
                 </p>
                 <button
                   onClick={() => handleSignIn('basic')}
-                  className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary-50 transition-colors w-full md:w-auto cursor-pointer"
+                  className="bg-white hover:scale-105 transition-all duration-300 text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary-50 w-full md:w-auto cursor-pointer"
                 >
                   Começar por R$ 9,90/mês
                 </button>
@@ -365,7 +365,7 @@ export default function Home() {
                   <div key={index} className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 hover:border-gray-200 transition-colors duration-300">
                     <button
                       onClick={() => setIsOpen(!isOpen)}
-                      className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                      className="w-full px-6 cursor-pointer py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
                     >
                       <h3 className="text-lg font-semibold text-gray-800">
                         {item.pergunta}
@@ -413,13 +413,13 @@ export default function Home() {
               <div className="flex flex-col md:flex-row gap-4 justify-center">
                 <button
                   onClick={() => handleSignIn('basic')}
-                  className="bg-primary text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary-600 transition-colors shadow-sm cursor-pointer"
+                  className="bg-primary hover:scale-105 transition-all duration-300 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary-600 shadow-sm cursor-pointer"
                 >
                   Começar Agora
                 </button>
                 <button
                   onClick={() => document.getElementById('planos')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-50 transition-colors border-2 border-primary cursor-pointer"
+                  className="bg-white hover:scale-105 transition-all duration-300 text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-50 border-2 border-primary cursor-pointer"
                 >
                   Ver Planos
                 </button>

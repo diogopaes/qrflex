@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div className="flex flex-col gap-2">
             <div className="text-2xl font-bold text-primary">
-                <Image src="/logo-black.svg" alt="QRFlex" width={80} height={20} />
+                <Image src="/logo.svg" alt="QRFlex" width={80} height={20} />
             </div>
             <div className="text-sm text-gray-600">
                 © 2025 QR Flex | Todos os direitos reservados

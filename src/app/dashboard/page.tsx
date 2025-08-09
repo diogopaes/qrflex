@@ -24,6 +24,7 @@ import { QrCode, BarChart3, Target, Star, Eye, Download, Edit, AlertCircle, Chev
 import { QRCodeSVG } from "qrcode.react";
 import { DashboardSkeleton } from "@/components/DashboardSkeleton";
 import { useUpgradePlan } from "@/hooks/useUpgradePlan";
+import StatCard from "./components/StatCard";
 
 const createQRCodeSchema = z.object({
   name: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
@@ -79,120 +80,53 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
+
       <div className="grid grid-cols-2 md:grid-cols-4 mt-12 gap-6">
-        <div className="relative bg-white rounded-2xl p-4 md:p-8 border border-gray-100 hover:border-gray-200 transition-all group">
-          <div className="absolute -top-4 -left-4 md:w-12 md:h-12 w-10 h-10 bg-primary/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-            <QrCode className="md:w-6 md:h-6  text-primary" />
-          </div>
-          <div className="">
-            <h3 className="md:text-lg text-sm font-semibold text-gray-900 mb-2">
-              QR Codes
-            </h3>
-            <div className="md:text-5xl text-3xl font-bold text-primary mb-1">
-              {qrCodes.length}
-            </div>
-            <p className="text-gray-400 md:text-sm text-xs">
-              {isLoading ? 'Carregando...' : `QR Codes ativos`}
-            </p>
-          </div>
-        </div>
+        {/* 1) Acessos */}
+        <StatCard
+          icon={<BarChart3 className="md:w-6 md:h-6 text-primary" />}
+          value={totalClicks}
+          label="Acessos"
+          hint={isLoading ? "Carregando..." : "Cliques totais"}
+          locked={session?.user?.plan === "basic"}
+          onUpgrade={handleUpdatePlan}
+        />
 
-        <div className="relative bg-white rounded-2xl p-4 md:p-8 border border-gray-100 hover:border-gray-200 transition-all group">
-          <div className="absolute -top-4 -left-4 md:w-12 md:h-12 w-10 h-10 bg-primary/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-            <BarChart3 className="md:w-6 md:h-6  text-primary" />
-          </div>
-          <div className="">
-            <h3 className="md:text-lg text-sm font-semibold text-gray-900 mb-2">
-              Acessos
-            </h3>
-            {session?.user?.plan === 'basic' ? (
-              <>
-                <div className="md:text-4xl text-2xl font-bold text-gray-300 mb-1 flex items-center gap-2">
-                  <span>***</span>
-                  <button
-                    onClick={handleUpdatePlan}
-                    className="text-[8px] bg-yellow-200 cursor-pointer font-medium text-yellow-500 px-2 py-1 rounded-full hover:scale-105 transition-all"
-                  >
-                    Atualizar
-                  </button>
-                </div>
-                <p className="text-gray-400 md:text-sm text-xs">
-                  Disponível no plano Completo
-                </p>
-              </>
-            ) : (
-              <>
-                <div className="md:text-5xl text-3xl font-bold text-primary mb-1">
-                  {totalClicks}
-                </div>
-                <p className="text-gray-400 md:text-sm text-xs">
-                  {isLoading ? 'Carregando...' : `Acessos totais`}
-                </p>
-              </>
-            )}
-          </div>
-        </div>
+        {/* 2) Taxa média */}
+        <StatCard
+          icon={<Target className="md:w-6 md:h-6 text-primary" />}
+          value={`${(Number.isFinite(clickRate) ? clickRate : 0)}%`}
+          label="Taxa Média"
+          hint={isLoading ? "Carregando..." : "Média por QR Code"}
+          locked={session?.user?.plan === "basic"}
+          onUpgrade={handleUpdatePlan}
+        />
 
-        <div className="relative bg-white rounded-2xl p-4 md:p-8 border border-gray-100 hover:border-gray-200 transition-all group">
-          <div className="absolute -top-4 -left-4 md:w-12 md:h-12 w-10 h-10 bg-primary/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-            <Target className="md:w-6 md:h-6  text-primary" />
-          </div>
-          <div className="">
-            <h3 className="md:text-lg text-sm font-semibold text-gray-900 mb-2">
-              Taxa de Acessos
-            </h3>
-            {session?.user?.plan === 'basic' ? (
-              <>
-                <div className="md:text-4xl text-2xl font-bold text-gray-300 mb-1 flex items-center gap-2">
-                  <span>***</span>
-                  <button
-                    onClick={handleUpdatePlan}
-                    className="text-[8px] cursor-pointer bg-yellow-200 font-medium text-yellow-500 px-2 py-1 rounded-full hover:scale-105 transition-all"
-                  >
-                    Atualizar
-                  </button>
-                </div>
-                <p className="text-gray-400 md:text-sm text-xs">
-                  Disponível no plano Completo
-                </p>
-              </>
-            ) : (
-              <>
-                <div className="md:text-5xl text-3xl font-bold text-primary mb-1">
-                  {clickRate}%
-                </div>
-                <p className="text-gray-400 md:text-sm text-xs">
-              {isLoading ? 'Carregando...' : 'Média por QR Code'}
-            </p>
-              </>
-            )}
-          </div>
-        </div>
+        {/* 3) QRs Ativos */}
+        <StatCard
+          icon={<QrCode className="md:w-6 md:h-6 text-primary" />}
+          value={qrCodes.length}
+          label="QR Codes"
+          hint={isLoading ? "Carregando..." : "Ativos"}
+        />
 
-        <div className="relative bg-white rounded-2xl p-4 md:p-8 border border-gray-100 hover:border-gray-200 transition-all group">
-          <div className="absolute -top-4 -left-4 md:w-12 md:h-12 w-10 h-10 bg-yellow-500/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-            <Star className="md:w-6 md:h-6  text-yellow-500" />
-          </div>
-          <div className="">
-            <h3 className="md:text-lg text-sm font-semibold text-gray-900 mb-2">
-              Plano Atual
-            </h3>
-            <div className="md:text-3xl text-md font-bold text-primary my-3 capitalize">
-              {session?.user?.plan === 'basic' ? 'Básico' : 'Completo'}
-            </div>
-            <p className="text-gray-400 md:text-sm text-xs">
-              {session?.user?.plan === 'basic' ? '1 QR Code disponível' : 'Ilimitado'}
-            </p>
-          </div>
-        </div>
+        {/* 4) Plano atual */}
+        <StatCard
+          icon={<Star className="md:w-6 md:h-6 text-yellow-500" />}
+          value={session?.user?.plan === "basic" ? "Básico" : "Completo"}
+          label="Plano Atual"
+          hint={session?.user?.plan === "basic" ? "1 QR disponível" : "Ilimitado"}
+          accent={session?.user?.plan === "basic" ? "text-primary" : "text-primary"}
+        />
       </div>
 
+
       <div className="mt-12">
-        <div className="bg-white relative rounded-2xl p-4 md:p-8 border border-gray-100">
+        <div className="bg-white relative rounded-2xl p-6 md:p-8 border border-gray-100">
           <div className="absolute -top-4 -left-4 md:w-12 md:h-12 w-10 h-10 bg-primary/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
             <QrCode className="md:w-6 md:h-6  text-primary" />
           </div>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">QR Codes Ativos</h2>
+          <h2 className="md:text-2xl text-xl font-semibold text-gray-900 mb-6">QR Codes Ativos</h2>
           
             {error && (
             <span className="text-red-500 mb-4 p-4 flex items-center w-auto gap-2 bg-red-50 rounded-xl">
@@ -203,16 +137,16 @@ export default function DashboardPage() {
             
             <div className="space-y-6">
               {isLoading ? (
-              <div className="text-center py-12 text-gray-500">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                Carregando QR Codes...
-              </div>
-              ) : qrCodes.length === 0 ? (
-              <div className="text-center pt-8 mb-6 text-gray-500">
-                <div className="mb-4">
-                  <QrCode className="w-12 h-12 mx-auto text-gray-400" />
+                <div className="text-center py-12 text-gray-500">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                  Carregando QR Codes...
                 </div>
-                Nenhum QR Code criado ainda.
+              ) : qrCodes.length === 0 ? (
+                <div className="text-center md:text-md text-sm pt-2 mb-6 text-gray-500">
+                  <div className="mb-4">
+                    <QrCode className="w-12 h-12 mx-auto text-gray-400" />
+                  </div>
+                  Nenhum QR Code criado ainda.
                 </div>
               ) : (
                 qrCodes.map(qr => (
@@ -245,10 +179,10 @@ export default function DashboardPage() {
                         <ChartNoAxesColumn className="w-4 h-4 text-gray-500" />
                         {session?.user?.plan === 'basic' ? (
                           <div className="flex items-center gap-2">
-                            <div className="text-2xl font-bold text-gray-300">***</div>
+                            <div className="text-2xl font-bold text-gray-300">•••</div>
                             <button
                               onClick={handleUpdatePlan}
-                              className="text-[8px] cursor-pointer bg-yellow-200 font-medium text-yellow-500 px-2 py-1 rounded-full hover:scale-105 transition-all"
+                              className="text-[10px] cursor-pointer bg-yellow-200 text-yellow-700 px-2 py-0.5 rounded-full hover:scale-105"
                             >
                               Atualizar
                         </button>
@@ -291,10 +225,10 @@ export default function DashboardPage() {
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild className="block">
                 <Button 
-                        className="bg-primary text-lg hover:scale-105 mt-6 transition-all cursor-pointer hover:bg-primary/90 !mx-auto rounded-full text-white"
-                        size="lg" 
+                  className="bg-primary text-lg hover:scale-105 mt-6 transition-all cursor-pointer hover:bg-primary/90 !mx-auto rounded-full text-white"
+                  size="lg" 
                 >
-                        {qrCodes.length < 1 ? 'Criar primeiro QRCode' : 'Criar QRCode'}
+                  {qrCodes.length < 1 ? 'Criar primeiro QRCode' : 'Criar QRCode'}
                 </Button>
               </DialogTrigger>
               <DialogContent>
@@ -340,16 +274,9 @@ export default function DashboardPage() {
               </DialogContent>
             </Dialog>
           ) : (
-                <div className="flex items-center justify-center !mx-auto gap-2 mt-6">
-                  <span className="text-gray-500">Limite de QR Codes atingido, no plano Básico.</span> 
-                  <Button 
-                    className="bg-yellow-200 cursor-pointer !ml-4 hover:scale-105 hover:bg-yellow-200 transition-all text-yellow-500 rounded-full"
-                    size="lg"
-                    onClick={() => handleUpdatePlan()}
-                  >
-                    Atualizar
-                  </Button>   
-                </div>
+            <div className="flex md:flex-row flex-col text-center items-center justify-center !mx-auto gap-2 mt-6">
+              <span className="text-gray-500 md:text-md text-sm">Limite de QR Codes atingido, no plano Básico.</span>   
+            </div>
           )}
 
           {/* Modal de Edição do QR Code */}

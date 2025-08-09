@@ -72,7 +72,7 @@ export default function Plans({ type = 'signin' }: { type: 'signin' | 'update' }
                     </div>
                     <button
                         onClick={() => type === 'signin' ? handleSignIn(plan.type) : handleUpdatePlan(plan.type)}
-                        className={`w-full mt-8 px-6 py-3 rounded-full font-medium transition-all cursor-pointer ${
+                        className={`w-full mt-8 px-6 py-3 hover:scale-105 transition-all duration-300 rounded-full font-medium cursor-pointer ${
                         plan.highlighted
                             ? 'bg-primary text-white hover:bg-primary-600'
                             : 'bg-gray-50 text-gray-800 hover:bg-gray-100'

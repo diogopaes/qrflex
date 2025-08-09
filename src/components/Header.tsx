@@ -22,14 +22,14 @@ export default function Header() {
         {status === 'authenticated' ? (
           <Link
             href="/dashboard"
-            className="bg-primary text-white px-6 py-2 rounded-full font-semibold hover:scale-105 transition-colors"
+            className="bg-primary text-white px-6 py-2 rounded-full font-semibold hover:scale-105 transition-all duration-300"
           >
             Dashboard
           </Link>
         ) : (
           <button
             onClick={() => handleSignIn('basic')}
-            className="bg-primary text-white px-6 py-2 rounded-full font-semibold hover:scale-105 transition-colors cursor-pointer"
+            className="bg-primary text-white px-6 py-2 rounded-full font-semibold hover:scale-105 transition-all duration-300 cursor-pointer"
           >
             Começar Agora
           </button>

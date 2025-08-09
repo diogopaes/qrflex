@@ -3,7 +3,7 @@
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { CreditCard } from "lucide-react";
+import { CreditCard, LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
 
 interface AccountModalProps {
@@ -77,7 +77,7 @@ export function AccountModal({ isOpen, onClose, session, onManageSubscription }:
             <Button 
               onClick={onManageSubscription}
               variant="ghost" 
-              className="text-xs border border-gray-300 bg-gray-100 hover:bg-gray-100 cursor-pointer hover:scale-105 transition-all duration-300 rounded-full"
+              className="text-xs border border-gray-300 bg-gray-100 hover:bg-gray-300 cursor-pointer hover:scale-105 transition-all duration-300 rounded-full"
             >
               Gerenciar assinatura
             </Button>
@@ -89,9 +89,9 @@ export function AccountModal({ isOpen, onClose, session, onManageSubscription }:
           <Button 
             onClick={() => signOut()}
             variant="ghost" 
-            className="text-xs px-6 py-2 rounded-full bg-red-100 text-red-400 hover:bg-red-500 hover:text-white cursor-pointer hover:scale-105 transition-all duration-300"
+            className="text-xs !px-8 py-2 rounded-full bg-red-100/50 text-red-500 hover:bg-red-500 hover:text-white cursor-pointer hover:scale-105 transition-all duration-300"
           >
-            Sair
+            <LogOut className="w-4 h-4" /> Sair
           </Button>
         </div>
       </DialogContent>
