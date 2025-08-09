@@ -42,6 +42,7 @@ export async function POST(req: Request) {
       url,
       shortUrl,
       shortId,
+      status: 'active',
       clicks: 0,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -52,6 +53,7 @@ export async function POST(req: Request) {
       name,
       url,
       shortUrl,
+      status: 'active',
       clicks: 0,
     });
   } catch (error) {

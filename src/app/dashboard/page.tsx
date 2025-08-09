@@ -20,7 +20,7 @@ import { format, formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
-import { QrCode, BarChart3, Target, Star, Eye, Download, Edit, AlertCircle, ChevronRight, ChartBar, ChartLine, ChartNoAxesColumn } from "lucide-react";
+import { QrCode, BarChart3, Target, Star, Eye, Download, Edit, AlertCircle, ChevronRight, ChartBar, ChartLine, ChartNoAxesColumn, Plus } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { DashboardSkeleton } from "@/components/DashboardSkeleton";
 import { useUpgradePlan } from "@/hooks/useUpgradePlan";
@@ -126,7 +126,7 @@ export default function DashboardPage() {
           <div className="absolute -top-4 -left-4 md:w-12 md:h-12 w-10 h-10 bg-primary/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
             <QrCode className="md:w-6 md:h-6  text-primary" />
           </div>
-          <h2 className="md:text-2xl text-xl font-semibold text-gray-900 mb-6">QR Codes Ativos</h2>
+          <h2 className="md:text-2xl text-xl font-semibold text-gray-900 mb-6">QR Codes</h2>
           
             {error && (
             <span className="text-red-500 mb-4 p-4 flex items-center w-auto gap-2 bg-red-50 rounded-xl">
@@ -144,9 +144,8 @@ export default function DashboardPage() {
               ) : qrCodes.length === 0 ? (
                 <div className="text-center md:text-md text-sm pt-2 mb-6 text-gray-500">
                   <div className="mb-4">
-                    <QrCode className="w-12 h-12 mx-auto text-gray-400" />
+                    <QrCode className="w-12 h-12 mx-auto text-gray-300" />
                   </div>
-                  Nenhum QR Code criado ainda.
                 </div>
               ) : (
                 qrCodes.map(qr => (
@@ -191,31 +190,31 @@ export default function DashboardPage() {
                           <div className="text-lg font-bold text-primary">{qr.clicks}</div>
                         )}
                       </div>
-                         <div className="flex gap-2">
-                          <button 
-                            onClick={() => setViewQRCode({ isOpen: true, qrCode: qr })}
-                            className="inline-flex cursor-pointer items-center gap-2 px-4 py-2 rounded-full bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
-                          >
-                            <Eye className="w-4 h-4" />
-                            <span className="hidden md:block text-sm">Visualizar</span>
-                          </button>
-                          <button 
-                            onClick={() => {
-                              setEditQRCode({ isOpen: true, qrCode: qr });
-                              resetEdit({
-                                name: qr.name,
-                                url: qr.url
-                              });
-                            }}
-                            className="inline-flex cursor-pointer items-center gap-2 px-4 py-2 rounded-full bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
-                          >
-                            <Edit className="w-4 h-4" />
-                            <span className="hidden md:block text-sm">Editar</span>
-                          </button>
-                        </div>
+                      <div className="flex gap-2">
+                        <button 
+                          onClick={() => setViewQRCode({ isOpen: true, qrCode: qr })}
+                          className="inline-flex cursor-pointer items-center gap-2 px-4 py-2 rounded-full bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
+                        >
+                          <Eye className="w-4 h-4" />
+                          <span className="hidden md:block text-sm">Visualizar</span>
+                        </button>
+                        <button 
+                          onClick={() => {
+                            setEditQRCode({ isOpen: true, qrCode: qr });
+                            resetEdit({
+                              name: qr.name,
+                              url: qr.url
+                            });
+                          }}
+                          className="inline-flex cursor-pointer items-center gap-2 px-4 py-2 rounded-full bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
+                        >
+                          <Edit className="w-4 h-4" />
+                          <span className="hidden md:block text-sm">Editar</span>
+                        </button>
+                      </div>
                       </div>
                     </div>
-                  </div>
+                </div>
                 ))
               )}
             </div>
@@ -225,16 +224,17 @@ export default function DashboardPage() {
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild className="block">
                 <Button 
-                  className="bg-primary text-lg hover:scale-105 mt-6 transition-all cursor-pointer hover:bg-primary/90 !mx-auto rounded-full text-white"
-                  size="lg" 
+                  className="bg-primary flex items-center gap-2 mb-6 text-lg hover:scale-105 mt-6 transition-all cursor-pointer hover:bg-primary/90 !mx-auto rounded-full text-white"
+                  size="xl" 
                 >
-                  {qrCodes.length < 1 ? 'Criar primeiro QRCode' : 'Criar QRCode'}
+                  <Plus className="w-8 h-8" />
+                  {qrCodes.length < 1 ? 'Criar primeiro QRCode' : 'Criar outro QRCode'}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                      <DialogTitle className="text-2xl font-semibold text-gray-900">Criar Novo QR Code</DialogTitle>
-                      <DialogDescription className="text-gray-500 mb-4">
+                  <DialogTitle className="text-3xl font-semibold text-gray-900">Criar QR Code</DialogTitle>
+                  <DialogDescription className="text-gray-500 mb-4">
                     Preencha as informações abaixo para criar seu QR Code dinâmico.
                   </DialogDescription>
                 </DialogHeader>
@@ -244,7 +244,7 @@ export default function DashboardPage() {
                     <Input
                       id="name"
                       placeholder="Ex: Cardápio Digital"
-                          className="h-12 !rounded-md"
+                          className="h-12 !rounded-md placeholder:text-gray-400"
                       {...register('name')}
                       disabled={isSubmitting}
                     />
@@ -257,7 +257,7 @@ export default function DashboardPage() {
                     <Label htmlFor="url">URL de Destino</Label>
                     <Input
                       id="url"
-                          className="h-12 !rounded-md"
+                          className="h-12 !rounded-md placeholder:text-gray-400"
                       placeholder="https://seu-site.com/pagina"
                       {...register('url')}
                       disabled={isSubmitting}
@@ -267,7 +267,7 @@ export default function DashboardPage() {
                     )}
                   </div>
 
-                      <Button type="submit" size="lg" className="!ml-auto cursor-pointer rounded-full block" disabled={isSubmitting}>
+                  <Button type="submit" size="xl" className="!ml-auto hover:scale-105 transition-all duration-300 cursor-pointer rounded-full block" disabled={isSubmitting}>
                     {isSubmitting ? 'Criando...' : 'Criar QR Code'}
                   </Button>
                 </form>
@@ -283,7 +283,7 @@ export default function DashboardPage() {
           <Dialog open={editQRCode.isOpen} onOpenChange={(open) => !open && setEditQRCode({ isOpen: false, qrCode: null })}>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle className="text-2xl font-semibold text-gray-900">Editar QR Code</DialogTitle>
+                <DialogTitle className="text-3xl font-semibold text-gray-900">Editar QR Code</DialogTitle>
                 <DialogDescription className="text-gray-500 mb-4">
                   Atualize as informações do seu QR Code
                 </DialogDescription>
@@ -303,7 +303,7 @@ export default function DashboardPage() {
                   <Input
                     id="edit-name"
                     placeholder="Ex: Cardápio Digital"
-                    className="h-12 !rounded-md"
+                    className="h-12 !rounded-md placeholder:text-gray-400"
                     {...registerEdit('name', {
                       required: 'Nome é obrigatório',
                       minLength: {
@@ -322,7 +322,7 @@ export default function DashboardPage() {
                   <Label htmlFor="edit-url">URL de Destino</Label>
                   <Input
                     id="edit-url"
-                    className="h-12 !rounded-md"
+                    className="h-12 !rounded-md placeholder:text-gray-400"
                     placeholder="https://seu-site.com/pagina"
                     {...registerEdit('url', {
                       required: 'URL é obrigatória',
@@ -338,7 +338,7 @@ export default function DashboardPage() {
                   )}
                 </div>
 
-                <Button type="submit" size="lg" className="!ml-auto cursor-pointer rounded-full block" disabled={isSubmittingEdit}>
+                <Button type="submit" size="xl" className="!ml-auto hover:scale-105 transition-all duration-300 cursor-pointer rounded-full block" disabled={isSubmittingEdit}>
                   {isSubmittingEdit ? 'Salvando...' : 'Salvar Alterações'}
                 </Button>
               </form>
@@ -349,15 +349,15 @@ export default function DashboardPage() {
           <Dialog open={viewQRCode.isOpen} onOpenChange={(open) => setViewQRCode({ isOpen: open, qrCode: null })}>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
-                <DialogTitle className="text-2xl font-semibold text-gray-900">QR Code</DialogTitle>
+                <DialogTitle className="text-3xl font-semibold text-gray-900">QR Code</DialogTitle>
                 <DialogDescription className="text-gray-500">
                   Escaneie ou faça o download do seu QR Code
                 </DialogDescription>
               </DialogHeader>
-              <div className="flex flex-col items-center justify-center p-6">
+              <div className="flex flex-col items-center justify-center p-4">
                 {viewQRCode.qrCode && (
                   <>
-                    <div className="bg-white p-2 rounded-xl shadow-sm border" id="qr-code-container">
+                    <div className="bg-white p-2 rounded-xl border" id="qr-code-container">
                       <QRCodeSVG
                         value={viewQRCode.qrCode.shortUrl}
                         size={200}
@@ -396,8 +396,8 @@ export default function DashboardPage() {
                           img.src = `data:image/svg+xml;base64,${btoa(data)}`;
                         }
                       }}
-                      className="mt-6 bg-primary hover:bg-primary/90 text-white rounded-full inline-flex items-center gap-2"
-                      size="lg"
+                      className="mt-6 cursor-pointer bg-primary hover:scale-105 transition-all duration-300 hover:bg-primary/90 text-white rounded-full inline-flex items-center gap-2"
+                      size="xl"
                     >
                       <Download className="w-4 h-4" />
                       Baixar PNG
