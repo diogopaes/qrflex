@@ -4,9 +4,9 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 interface CheckoutStartPageProps {
-    params: {
+    params: Promise<{
       planSelected: string;
-    };
+    }>;
   }
 
 export default async function CheckoutStartPage({ params }: CheckoutStartPageProps) {
