@@ -98,7 +98,7 @@ export default function DashboardPage() {
           icon={<Target className="md:w-6 md:h-6 text-primary" />}
           value={`${(Number.isFinite(clickRate) ? clickRate : 0)}%`}
           label="Taxa Média"
-          hint={isLoading ? "Carregando..." : "Média por QR Code"}
+          hint={isLoading ? "Carregando..." : "Média por QR"}
           locked={session?.user?.plan === "basic"}
           onUpgrade={handleUpdatePlan}
         />
@@ -222,11 +222,11 @@ export default function DashboardPage() {
 
             {/* Botão e Modal de Criar QR Code */}
           {session?.user?.plan === 'premium' || qrCodes.length < 1 ? (
-            <Dialog open={open} onOpenChange={setOpen}>
+            <Dialog open={qrCodes.length < 1 ? true : open} onOpenChange={setOpen}>
               <DialogTrigger asChild className="block">
                 <Button 
                   className="bg-primary flex items-center gap-2 mb-6 text-lg hover:scale-105 mt-6 transition-all cursor-pointer hover:bg-primary/90 !mx-auto rounded-full text-white"
-                  size="xl" 
+                  size="xl"
                 >
                   <Plus className="w-8 h-8" />
                   {qrCodes.length < 1 ? 'Criar primeiro QRCode' : 'Criar outro QRCode'}
