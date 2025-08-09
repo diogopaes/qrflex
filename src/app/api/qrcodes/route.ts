@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { adminDb } from '@/config/firebase';
+import { admin, adminDb } from '@/config/firebase';
 import { nanoid } from 'nanoid';
-import { Timestamp } from 'firebase-admin/firestore';
 
 async function generateUniqueShortId(): Promise<string> {
   let shortId = "";
@@ -44,8 +43,8 @@ export async function POST(req: Request) {
       shortUrl,
       shortId,
       clicks: 0,
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now(),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 
     return NextResponse.json({
@@ -71,18 +70,26 @@ export async function GET(req: Request) {
     const qrCodesSnapshot = await adminDb()
       .collection('qrcodes')
       .where('userId', '==', session?.user?.id)
-      //.orderBy('createdAt', 'desc')
+      .orderBy('createdAt', 'desc')
       .get();
 
     const qrCodes = qrCodesSnapshot.docs.map(doc => {
       const data = doc.data();
+      const createdAt =
+        data.createdAt?.toDate?.() ??
+        (data.createdAt ? new Date(data.createdAt) : null);
+    
+      const updatedAt =
+        data.updatedAt?.toDate?.() ??
+        (data.updatedAt ? new Date(data.updatedAt) : null);
+    
       return {
         id: doc.id,
         ...data,
-        createdAt: data.createdAt.toDate(),
-        updatedAt: data.updatedAt.toDate(),
+        createdAt: createdAt ? createdAt.toISOString() : null,
+        updatedAt: updatedAt ? updatedAt.toISOString() : null,
       };
-    });
+    });      
 
     return NextResponse.json(qrCodes);
   } catch (error) {

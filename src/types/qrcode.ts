@@ -3,6 +3,7 @@ export interface QRCode {
   userId: string;
   name: string;
   url: string;
+  shortId: string;
   shortUrl: string;
   clicks: number;
   createdAt: Date;
