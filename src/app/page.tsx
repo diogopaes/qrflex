@@ -21,7 +21,7 @@ export default function Home() {
       <main className="min-h-screen">
         {/* Hero Section */}
         <section className="flex items-center">
-          <div className="container mx-auto px-6 pb-16 pt-24">
+          <div className="container mx-auto px-6 pb-16 md:pt-24 pt-16">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               {/* Conteúdo Lado Esquerdo */}
               <div className="space-y-8">
@@ -275,7 +275,7 @@ export default function Home() {
           </div>
 
           {/* CTA após Dores */}
-          <div className="mt-16 text-center">
+          <div className="mt-16 text-center px-6">
               <div className="max-w-2xl mx-auto bg-primary rounded-2xl p-8 md:p-12">
                 <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
                 Com o QR Flex, você tem controle total do seu QR, mesmo depois de impresso.

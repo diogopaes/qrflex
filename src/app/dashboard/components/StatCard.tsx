@@ -16,7 +16,7 @@ export default function StatCard({
     accent?: string;
   }) {
     return (
-      <div className="relative bg-white rounded-2xl p-4 md:py-5 px-8 border border-gray-100 hover:border-gray-200 transition-all group flex flex-col justify-center">
+      <div className="relative bg-white rounded-2xl p-4 md:py-5 md:px-8 border border-gray-100 hover:border-gray-200 transition-all group flex flex-col justify-center">
         <div className="absolute -top-4 -left-4 md:w-12 md:h-10 w-10 h-10 bg-primary/5 rounded-2xl grid place-items-center group-hover:scale-110 transition-transform">
           {icon}
         </div>
@@ -27,23 +27,23 @@ export default function StatCard({
 
         <h3 className="mt-1 text-sm md:text-base font-semibold text-gray-900">{label}</h3>
   
-        <p className="text-gray-400 text-xs mt-1">
+        <div className="mt-1">
           {locked ? (
-            <>
-              Disponível no plano Completo{" "}
-              {onUpgrade && (
-                <button
-                  onClick={onUpgrade}
-                  className="ml-1 text-[10px] cursor-pointer bg-yellow-200 text-yellow-700 px-2 py-0.5 rounded-full hover:scale-105"
-                >
-                  Atualizar
-                </button>
-              )}
-            </>
+            <p className="text-gray-400 md:text-sm text-[10px]">
+                Disponível no plano Completo{" "}
+                {onUpgrade && (
+                  <button
+                    onClick={onUpgrade}
+                    className="ml-1 text-[10px] cursor-pointer bg-yellow-200 text-yellow-700 px-2 py-0.5 rounded-full hover:scale-105"
+                  >
+                    Atualizar
+                  </button>
+                )}
+            </p>
           ) : (
-            hint
+            <p className="text-gray-400 text-xs">{hint}</p>
           )}
-        </p>
+        </div>
       </div>
     );
   }

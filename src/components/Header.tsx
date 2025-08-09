@@ -2,6 +2,7 @@
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { Skeleton } from "./ui/skeleton";
 
 export default function Header() {
   const { status } = useSession();
@@ -19,20 +20,24 @@ export default function Header() {
           <Image src="/logo.svg" alt="QRFlex" width={149} height={32} />
         </Link>
 
-        {status === 'authenticated' ? (
-          <Link
-            href="/dashboard"
-            className="bg-primary text-white px-6 py-2 rounded-full font-semibold hover:scale-105 transition-all duration-300"
-          >
-            Dashboard
-          </Link>
+        {status === 'loading' ? (
+          <Skeleton className="w-24 h-8 rounded-full" />
         ) : (
-          <button
-            onClick={() => handleSignIn('basic')}
-            className="bg-primary text-white px-6 py-2 rounded-full font-semibold hover:scale-105 transition-all duration-300 cursor-pointer"
-          >
-            Começar Agora
-          </button>
+          status === 'authenticated' ? (
+            <Link
+              href="/dashboard"
+              className="bg-primary text-white px-6 py-2 rounded-full font-semibold hover:scale-105 transition-all duration-300"
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <button
+              onClick={() => handleSignIn('basic')}
+              className="bg-primary text-white md:px-6 px-4 py-2 rounded-full font-semibold hover:scale-105 transition-all duration-300 cursor-pointer"
+            >
+              Já tenho conta
+            </button>
+          )
         )}
       </div>
     </header>
