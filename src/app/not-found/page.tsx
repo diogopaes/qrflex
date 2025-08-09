@@ -14,12 +14,12 @@ export default function QrNotFoundPage() {
                 O QR Code que você tentou acessar não existe ou foi desativado.
             </p>
         </div>
-        <a
+        <Link
           href="/"
           className="inline-block px-6 py-3 bg-primary/80 text-white font-semibold rounded-full hover:bg-primary transition hover:scale-105"
         >
           Voltar para a página inicial
-        </a>
+        </Link>
 
         <footer className="absolute bottom-10 text-center">
           <Link href="/" className="text-xs text-gray-400 hover:scale-110 transition-transform duration-300 flex items-center justify-center gap-2 border border-gray-200  rounded-full px-4 py-3">

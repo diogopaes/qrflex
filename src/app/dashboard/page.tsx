@@ -25,6 +25,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { DashboardSkeleton } from "@/components/DashboardSkeleton";
 import { useUpgradePlan } from "@/hooks/useUpgradePlan";
 import StatCard from "./components/StatCard";
+import { QRCode as QRCodeProps } from "@/types/qrcode";
 
 const createQRCodeSchema = z.object({
   name: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
@@ -36,11 +37,11 @@ type CreateQRCodeForm = z.infer<typeof createQRCodeSchema>;
 export default function DashboardPage() {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
-  const [viewQRCode, setViewQRCode] = useState<{ isOpen: boolean; qrCode: any }>({
+  const [viewQRCode, setViewQRCode] = useState<{ isOpen: boolean; qrCode: QRCodeProps | null }>({
     isOpen: false,
     qrCode: null
   });
-  const [editQRCode, setEditQRCode] = useState<{ isOpen: boolean; qrCode: any }>({
+  const [editQRCode, setEditQRCode] = useState<{ isOpen: boolean; qrCode: QRCodeProps | null }>({
     isOpen: false,
     qrCode: null
   });
@@ -386,7 +387,7 @@ export default function DashboardPage() {
                             ctx?.drawImage(img, 0, 0, 1000, 1000);
                             
                             const link = document.createElement("a");
-                            link.download = `qrcode-${viewQRCode.qrCode.name}.png`;
+                            link.download = `qrcode-${viewQRCode.qrCode?.name || 'imagem'}.png`;
                             link.href = canvas.toDataURL("image/png");
                             document.body.appendChild(link);
                             link.click();

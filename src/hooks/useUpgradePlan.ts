@@ -31,8 +31,8 @@ export function useUpgradePlan() {
       } else {
         setError(data?.message || "Upgrade falhou");
       }
-    } catch (err: any) {
-      setError(err.message || "Erro inesperado");
+    } catch (err: { message: string } | Error | unknown) {
+      setError((err as Error).message || "Erro inesperado");
     } finally {
       setLoading(false);
     }

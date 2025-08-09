@@ -16,6 +16,7 @@ import { AccountModal } from "@/components/AccountModal";
 import { useUpgradePlan } from "@/hooks/useUpgradePlan";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
+import { Session } from "next-auth";
 
 function getInitials(name: string) {
   return name
@@ -26,7 +27,7 @@ function getInitials(name: string) {
     .slice(0, 2);
 }
 
-export default function HeaderDashboard({ session }: { session: any }) {
+export default function HeaderDashboard({ session }: { session: Session }) {
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const { upgrade } = useUpgradePlan();
   const userInitials = session?.user?.name ? getInitials(session.user.name) : '??';

@@ -3,7 +3,13 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
-export default async function CheckoutStartPage({ params }: any) {
+interface CheckoutStartPageProps {
+    params: {
+      planSelected: string;
+    };
+  }
+
+export default async function CheckoutStartPage({ params }: CheckoutStartPageProps) {
     const queryParams = await params;
     const session = await auth();
 

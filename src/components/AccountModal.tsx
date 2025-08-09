@@ -5,11 +5,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { CreditCard, LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { Session } from "next-auth";
 
 interface AccountModalProps {
   isOpen: boolean;
   onClose: () => void;
-  session: any;
+  session: Session;
   onManageSubscription: () => void;
 }
 

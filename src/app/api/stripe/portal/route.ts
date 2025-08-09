@@ -1,4 +1,3 @@
-// app/api/stripe/portal/route.ts
 import { auth } from "@/lib/auth";
 import { adminDb } from "@/config/firebase";
 import { NextResponse } from "next/server";
@@ -8,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-07-30.basil",
 });
 
-export async function POST(req: Request) {
+export async function POST() {
   const session = await auth();
   if (!session) {
     return new NextResponse("Unauthorized", { status: 401 });

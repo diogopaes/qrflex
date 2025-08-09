@@ -8,6 +8,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    const { id } = await params;
     const session = await auth();
     if (!session) {
       return new NextResponse('Unauthorized', { status: 401 });
@@ -17,7 +18,7 @@ export async function PUT(
     const { name, url } = body;
 
     // Verificar se o QR Code existe e pertence ao usuário
-    const qrCodeRef = adminDb().collection('qrcodes').doc(params.id);
+    const qrCodeRef = adminDb().collection('qrcodes').doc(id);
     const qrCode = await qrCodeRef.get();
 
     if (!qrCode.exists) {
