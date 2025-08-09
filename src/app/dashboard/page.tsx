@@ -174,7 +174,7 @@ export default function DashboardPage() {
                       </div>
                               
                     </div>
-                    <div className="flex items-center gap-6">
+                    <div className="flex items-center md:gap-6 gap-2">
                       <div className="flex items-center gap-2">
                         <ChartNoAxesColumn className="w-4 h-4 text-gray-500" />
                         {session?.user?.plan === 'basic' ? (
@@ -194,7 +194,7 @@ export default function DashboardPage() {
                       <div className="flex gap-2">
                         <button 
                           onClick={() => setViewQRCode({ isOpen: true, qrCode: qr })}
-                          className="inline-flex cursor-pointer items-center gap-2 px-4 py-2 rounded-full bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
+                          className="inline-flex cursor-pointer items-center gap-2 md:px-4 px-2 py-2 rounded-full bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
                         >
                           <Eye className="w-4 h-4" />
                           <span className="hidden md:block text-sm">Visualizar</span>
@@ -207,7 +207,7 @@ export default function DashboardPage() {
                               url: qr.url
                             });
                           }}
-                          className="inline-flex cursor-pointer items-center gap-2 px-4 py-2 rounded-full bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
+                          className="inline-flex cursor-pointer items-center gap-2 md:px-4 px-2 py-2 rounded-full bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
                         >
                           <Edit className="w-4 h-4" />
                           <span className="hidden md:block text-sm">Editar</span>
