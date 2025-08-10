@@ -97,7 +97,7 @@ export default function Home() {
                         <h3 className="text-sm font-semibold text-gray-900 mb-1">
                           Acessos
                         </h3>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-[10px] text-gray-400">
                           Disponível no plano Completo
                           <span className="md:text-[10px] ml-2 pt-1 text-[8px] bg-yellow-200 text-yellow-700 px-2 py-1 rounded-full">
                             Atualizar
@@ -116,14 +116,14 @@ export default function Home() {
                             <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                               Ativo
                             </span>
-                            <span className="text-sm text-gray-500">
+                            <span className="md:text-sm text-xs text-gray-500">
                               Criado há 2 dias
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <h4 className="text-gray-900 font-semibold md:text-sm text-xs">Cardápio Digital</h4>
+                            <h4 className="text-gray-900 font-semibold md:text-sm text-xs text-nowrap">Cardápio Digital</h4>
                             <ChevronRight className="w-4 h-4" />
-                            <p className="text-gray-600 md:text-sm text-xs">qrflix.com/cardapio-cafe</p>
+                            <p className="text-gray-600 md:text-sm text-xs truncate max-w-[120px] md:max-w-none">qrflix.com/cardapio-cafe</p>
                           </div>
                           <div className="flex items-center gap-2">
                             <button className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-primary/5 text-primary text-sm hover:bg-primary/10 transition-colors">
