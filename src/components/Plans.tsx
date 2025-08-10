@@ -24,7 +24,7 @@ export default function Plans({ type = 'signin' }: { type: 'signin' | 'update' }
         <section id="planos" className="py-20 bg-gray-50">
             <div className="container mx-auto px-6">
                 <h2 className="text-3xl font-bold text-center mb-16 text-gray-800">
-                Planos simples e direto ao ponto
+                 {type === 'signin' ? 'Planos simples e direto ao ponto' : 'Escolha um plano'}
                 </h2>
                 
                 {/* Cards de Planos */}

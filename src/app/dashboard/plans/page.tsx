@@ -11,6 +11,6 @@ export default function DashboardPlansPage() {
     }
 
     return (
-        <Plans type="signin" />
+        <Plans type="update" />
     )
 }
