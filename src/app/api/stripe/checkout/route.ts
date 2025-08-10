@@ -34,6 +34,7 @@ export async function POST(req: Request) {
         metadata: {
             email: user?.email as string,
         },
+        allow_promotion_codes: true,
     };
 
     const stripeSession = await stripe.checkout.sessions.create(params);
